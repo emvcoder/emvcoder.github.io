@@ -61,10 +61,7 @@ article img {
   border-radius: 5px;
 }
 
-@media (max-width: 900px) {
-  .container {
-    width: 100%;
-  }
+@media (min-width: 900px) {
   .fidget_spinner {
     zoom: 2.5;
   }
