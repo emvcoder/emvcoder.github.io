@@ -65,6 +65,9 @@ article img {
   .container {
     width: 100%;
   }
+  .fidget_spinner {
+    zoom: 2.5;
+  }
 }
 
 /* Preloader */
