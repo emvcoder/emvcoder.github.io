@@ -85,7 +85,7 @@ article img {
   left: calc(50% - 27px);
   z-index: 1000;
   display: block;
-  background: url('/svg/fidget_spinner.svg');
+  background: url('https://emvcoder.github.io/vk_spinner/svg/fidget_spinner.svg');
   width: 54px;
   height: 54px;
   -webkit-animation: fidget_spinner 2s infinite forwards;
