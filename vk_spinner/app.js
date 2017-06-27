@@ -13,6 +13,4 @@ window.onload = () => {
   };
 
   let preloader = setTimeout(hidePreloader, delay);
-
-  document.querySelector("#show__preloader").onclick = showPreloader;
 };
