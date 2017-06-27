@@ -63,7 +63,7 @@ article img {
 
 @media (min-width: 240px) and (max-width: 960px) {
   .fidget_spinner {
-    zoom: 2.5;
+    zoom: 2;
   }
 }
 
