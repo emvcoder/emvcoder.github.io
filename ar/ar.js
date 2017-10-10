@@ -130,7 +130,7 @@ AR.prototype.contextAnalysis = function (v) {
 
 	for (let i = 0; i < pixels.length; i += 4) {
 		let current = (pixels[i] + pixels[i+1] + pixels[i+2])/3;
-		if (current > porog/1.4) {
+		if (current > porog/1.8) {
 			pixels[i] = 255;
 			pixels[i+1] = 255;
 			pixels[i+2] = 255;
