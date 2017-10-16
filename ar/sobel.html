@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<title>sobel filter</title>
+
+<!--<script src="../Common/analytics.js"></script>-->
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="sobelShaders.js"></script>
+<script type="text/javascript" src="sobel.js"></script>
+
+
+<body style="background-color:grey;">
+
+<br>
+<div style="float:right">
+  <div>
+      Cody Smith <br>
+      Interactive Computer Graphics with WebGL <br>
+      July 2015 <br>
+  </div>
+  <br>
+
+<script type="text/javascript">
+  window.onload = function() {
+    window.sob = new glSobel()
+    var img = new Image()
+    img.onload = function(){
+      sob.changeImage.bind(sob)(this)
+      sob.render()
+    }
+    img.src = "parking.jpg"
+  }
+
+
+</script>
+  
+</div>
+<canvas id="gl-canvas" width="800" height="768" style=" border-style: solid; border-width: 5px;">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<br>
+</body>
+</html>

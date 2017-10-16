@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<title>hough transform 3</title>
+<title>hough transform 2</title>
 
 <!--<script src="../Common/analytics.js"></script>-->
-<script src="webgl-utils.js"></script>
-<script src="initShaders.js"></script>
-<script src="MV.js"></script>
+<script src="../Common/webgl-utils.js"></script>
+<script src="../Common/initShaders.js"></script>
+<script src="../Common/MV.js"></script>
 <script src="sobelShaders.js"></script>
 <script src="sobel.js"></script>
 <script src="hough.js"></script>
 <script src="houghHelpers.js"></script>
-<script src="connectedComponents.js"></script>
+<script src="../libs/connectedComponents.js"></script>
 
 <body style="background-color:grey;">
 
@@ -27,7 +27,7 @@
 <script type="text/javascript">
   window.onload = function() {
     window.sob = new glHough()
-    initVideo()
+    loadImage("goboard.jpg")
   }
 
   function loadImage( url) {
@@ -50,7 +50,7 @@
     //console.log('image loaded called')
     var blobs = houghHelpers.findBlobs(acc, threshold)
     houghHelpers.drawLines(acc, blobs.points, document.getElementById('can2db'))
-    // drawBlobDetection(blobs)
+    drawBlobDetection(blobs)
   }
 
   function drawBlobDetection(blobs) {
@@ -71,7 +71,7 @@
 function initVideo() {
   video      = document.createElement('video');
   video.width    = 400;
-  video.height   = 300;
+  video.height   = 400;
   video.autoplay = true;
   var hasUserMedia = navigator.webkitGetUserMedia ? true : false;
   console.log('has user media', hasUserMedia)
@@ -112,9 +112,9 @@ function animate() {
   buffer = img.data.buffer
   //
   sob.changeImage.bind(sob)(img)
-    //sob.rgbEncodeOutput = false
-    //sob.thresholdOutput = 0
-    //sob.render()
+    sob.rgbEncodeOutput = false
+    sob.thresholdOutput = 0
+    sob.render()
     imageLoaded(sob)
   //
   requestAnimationFrame(animate)
@@ -123,9 +123,9 @@ function animate() {
 
 
 </script>
-
+  
 </div>
-<button onclick="loadImage('lines.jpg')">goboard.jpg</button>
+<button onclick="loadImage('goboard.jpg')">goboard.jpg</button>
 <button onclick="loadImage('diags.png')">diags.png</button>
 <button onclick="loadImage('diags2.png')">diags2.png</button>
 <button onclick="loadImage('lines.png')">lines.png</button>
@@ -133,7 +133,7 @@ function animate() {
 <button onclick="loadImage('parking.jpg')">parking.jpg</button>
 <button onclick="initVideo()">VIDEO</button>
 <br>
-<canvas style="display: none" id="gl-canvas" width="800" height="768" style=" border-style: solid; border-width: 5px;">
+<canvas id="gl-canvas" width="800" height="768" style=" border-style: solid; border-width: 5px;">
   Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 <canvas id='can2db'></canvas>

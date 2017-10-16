@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<title>hough transform</title>
+
+<!--<script src="../Common/analytics.js"></script>-->
+<script src="http://mourner.github.io/simplify-js/simplify.js"></script>
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="sobelShaders.js"></script>
+<script type="text/javascript" src="sobel.js"></script>
+<script type="text/javascript" src="hough.js"></script>
+
+
+<body style="background-color:grey;">
+
+<br>
+<div style="float:right">
+  <div>
+      Cody Smith <br>
+      Interactive Computer Graphics with WebGL <br>
+      July 2015 <br>
+  </div>
+  <br>
+
+<script type="text/javascript">
+  window.onload = function() {
+    window.sob = new glHough()
+    loadImage("goboard.jpg")
+  }
+
+  function loadImage( url) {
+    var img = new Image()
+    img.onload = function(){
+      console.time('render')
+      sob.changeImage.bind(sob)(this)
+      sob.render()
+      console.timeEnd('render')
+    }
+    img.src = url
+  }
+
+
+</script>
+
+</div>
+<button onclick="loadImage('goboard.jpg')">goboard.jpg</button>
+<button onclick="loadImage('diags.png')">diags.png</button>
+<button onclick="loadImage('lines.png')">lines.png</button>
+<button onclick="loadImage('verts.png')">verts.png</button>
+<button onclick="loadImage('parking.jpg')">parking.jpg</button>
+<br>
+<canvas id="gl-canvas" width="800" height="768" style=" border-style: solid; border-width: 5px;">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<br>
+</body>
+</html>
