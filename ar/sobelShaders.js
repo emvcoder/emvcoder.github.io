@@ -24,7 +24,15 @@ var sobelShaders = {
 
         float lum(vec4 c) {
             float light = (c.r+c.g+c.b)/3.0;
-            return dot(vec3(light,light,light), vec3(0.3, 0.59, 0.11));
+            float l = 0.0;
+
+            if (light > 0.65) {
+                l = 0.0;
+            } else {
+                l = 1.0;
+            }
+
+            return dot(vec3(l,l,l), vec3(0.3, 0.59, 0.11));
         }
 
 

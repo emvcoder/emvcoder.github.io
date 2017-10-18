@@ -172,7 +172,7 @@ var houghHelpers = {
         let x = ((line.x1*line.y2-line.x2*line.y1)*(line2.x2-line2.x1)-(line2.x1*line2.y2-line2.x2*line2.y1)*(line.x2-line.x1))/((line.y1-line.y2)*(line2.x2-line2.x1)-(line2.y1-line2.y2)*(line.x2-line.x1));
         let y = ((line2.y1-line2.y2)*x-(line2.x1*line2.y2-line2.x2*line2.y1))/(line2.x2-line2.x1);
         if (Math.abs(x) < cw && Math.abs(y) < ch) {
-          console.log(x, y)
+          // console.log(x, y)
           ctx.fillRect(Math.abs(x), Math.abs(y), 12,12)
         }
       }

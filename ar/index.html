@@ -26,7 +26,17 @@
 
 <script type="text/javascript">
   window.onload = function() {
-    window.sob = new glHough()
+    window.Id = 0;
+    window.sob = new glHough();
+    navigator.mediaDevices.enumerateDevices()
+      .then(function(devices) {
+        devices.forEach(function(device) {
+          if (device.kind == "videoinput" && device.label.indexOf('back') >= 0) {
+            window.Id = device.deviceId;
+            alert("ID 1 : " + Id);
+          }
+        });
+      })
     initVideo()
   }
 
@@ -75,8 +85,11 @@ function initVideo() {
   video.autoplay = true;
   var hasUserMedia = navigator.webkitGetUserMedia ? true : false;
   console.log('has user media', hasUserMedia)
-
-  navigator.webkitGetUserMedia({'video':true}, gotStream, function(error){
+console.log(window.Id)
+  navigator.getUserMedia({
+    video: {
+        optional: [{ deviceId: window.Id }]
+    }}, gotStream, function(error){
     console.log("Failed to get a stream due to", error);
   });
 
