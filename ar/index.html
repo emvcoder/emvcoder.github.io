@@ -34,10 +34,11 @@
           if (device.kind == "videoinput" && device.label.indexOf('back') >= 0) {
             window.Id = device.deviceId;
             alert("ID 1 : " + Id);
+            initVideo()
           }
         });
       })
-    initVideo()
+    
   }
 
   function loadImage( url) {
@@ -85,7 +86,6 @@ function initVideo() {
   video.autoplay = true;
   var hasUserMedia = navigator.webkitGetUserMedia ? true : false;
   console.log('has user media', hasUserMedia)
-console.log(window.Id)
   navigator.getUserMedia({
     video: {
         optional: [{ deviceId: window.Id }]
