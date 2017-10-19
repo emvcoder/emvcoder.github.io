@@ -1,159 +1,29 @@
-<!DOCTYPE html>
 <html>
+  <head>
+    <title>AR 2017 Player</title>
+    <script src="//cdn.bootcss.com/eruda/1.2.0/eruda.min.js"></script>
+    <script>
+     window.onload = function(){
+       var el = document.createElement('div');
+       document.body.appendChild(el);
 
-<title>hough transform 3</title>
+       eruda.init({
+         container: el,
+       });
+     }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#cf3a3f">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
-<!--<script src="../Common/analytics.js"></script>-->
-<script src="webgl-utils.js"></script>
-<script src="initShaders.js"></script>
-<script src="MV.js"></script>
-<script src="sobelShaders.js"></script>
-<script src="sobel.js"></script>
-<script src="hough.js"></script>
-<script src="houghHelpers.js"></script>
-<script src="connectedComponents.js"></script>
-
-<body style="background-color:grey;">
-
-<br>
-<div style="float:right">
-  <div>
-      Cody Smith <br>
-      Interactive Computer Graphics with WebGL <br>
-      July 2015 <br>
-  </div>
-  <br>
-
-<script type="text/javascript">
-  window.onload = function() {
-    window.Id = 0;
-    window.sob = new glHough();
-    navigator.mediaDevices.enumerateDevices()
-      .then(function(devices) {
-        devices.forEach(function(device) {
-          if (device.kind == "videoinput" && device.label.indexOf('back') >= 0) {
-            window.Id = device.deviceId;
-            alert("ID 1 : " + Id);
-            initVideo()
-          }
-        });
-      })
-    
-  }
-
-  function loadImage( url) {
-    var img = new Image()
-    img.onload = function(){
-      console.time('render')
-      sob.changeImage.bind(sob)(this)
-      sob.rgbEncodeOutput = false
-      sob.thresholdOutput = 0
-      sob.render()
-      console.timeEnd('render')
-      imageLoaded(sob)
-    }
-    img.src = url
-  }
-
-  var threshold = 410
-
-  function imageLoaded( acc) {
-    //console.log('image loaded called')
-    var blobs = houghHelpers.findBlobs(acc, threshold)
-    houghHelpers.drawLines(acc, blobs.points, document.getElementById('can2db'))
-    // drawBlobDetection(blobs)
-  }
-
-  function drawBlobDetection(blobs) {
-    var can = document.getElementById('can2d')
-    can.width = blobs.imagedata.width
-    can.height = blobs.imagedata.height
-    var ctx = can.getContext('2d')
-    ctx.putImageData(blobs.imagedata, 0,0)
-    //
-    //houghHelpers.drawPoints(blobs.points, ctx)
-  }
-
-
-
-</script>
-
-<script type="text/javascript">
-function initVideo() {
-  video      = document.createElement('video');
-  video.width    = 400;
-  video.height   = 300;
-  video.autoplay = true;
-  var hasUserMedia = navigator.webkitGetUserMedia ? true : false;
-  console.log('has user media', hasUserMedia)
-  navigator.getUserMedia({
-    video: {
-        optional: [{ deviceId: window.Id }]
-    }}, gotStream, function(error){
-    console.log("Failed to get a stream due to", error);
-  });
-
-  //document.body.appendChild(video)
-}
-
-function gotStream( stream ) {
-  console.log( 'Connected to stream. Starting decoding...')
-  if( window.URL ) {
-    video.src = window.URL.createObjectURL( stream );
-  } else {
-    video.src = stream;
-  }
-  video.onerror = function () {
-    stream.stop();
-    streamError();
-  };
-  video.onloadedmetadata = function(e) {
-    //start();
-    console.log('meta data loaded. whatever that means???')
-    animate()
-  }
-}
-
-function animate() {
-  //console.log('.')
-  var can = document.getElementById('can2dc')
-  can.width = video.width
-  can.height = video.height
-  var ctx = can.getContext('2d')
-  ctx.drawImage(video, 0, 0, video.width, video.height)
-  img = ctx.getImageData(0, 0, can.width, can.height)
-  buffer = img.data.buffer
-  //
-  sob.changeImage.bind(sob)(img)
-    //sob.rgbEncodeOutput = false
-    //sob.thresholdOutput = 0
-    //sob.render()
-    imageLoaded(sob)
-  //
-  requestAnimationFrame(animate)
-  //setTimeout(animate, 120)
-}
-
-
-</script>
-
-</div>
-<button onclick="loadImage('lines.jpg')">goboard.jpg</button>
-<button onclick="loadImage('diags.png')">diags.png</button>
-<button onclick="loadImage('diags2.png')">diags2.png</button>
-<button onclick="loadImage('lines.png')">lines.png</button>
-<button onclick="loadImage('verts.png')">verts.png</button>
-<button onclick="loadImage('parking.jpg')">parking.jpg</button>
-<button onclick="initVideo()">VIDEO</button>
-<br>
-<canvas style="display: none" id="gl-canvas" width="800" height="768" style=" border-style: solid; border-width: 5px;">
-  Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
-<canvas id='can2db'></canvas>
-<canvas id='can2dc'></canvas>
-<canvas id='can2d'></canvas>
-
-
-<br>
-</body>
+    <script src="//cdn.bootcss.com/three.js/r83/three.min.js"></script>
+    <script src='vendor/js-aruco/svd.js'></script>
+    <script src='vendor/js-aruco/posit1-patched.js'></script>
+    <script src='vendor/js-aruco/cv.js'></script>
+    <script src='vendor/js-aruco/aruco.js'></script>
+  </head>
+  <body>
+    <script src="bundle.js"></script>
+  </body>
 </html>
