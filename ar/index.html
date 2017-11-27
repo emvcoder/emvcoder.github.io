@@ -7,7 +7,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
   <script type="text/javascript" src="cv.js"></script> 
   <script type="text/javascript" src="aruco.js"></script> 
-	
+  <style>
+	  canvas {
+		  position: absolute;
+	  }
+  </style>
   <script>
     var video, canvas, context, imageData, detector;
     var camera, scene, renderer;
@@ -171,7 +175,7 @@
 <body style="font-family: monospace; margin: 0">
   <center>
     <video id="video" autoplay="true" style="display:none;"></video>
-    <canvas id="canvas" style="width:100vw; height:100vh; position: absolute"></canvas>
+    <canvas id="canvas" style="width:100vw; height:100vh; z-index: -1;"></canvas>
   </center>
 
 </body>
