@@ -44,14 +44,14 @@
     }
     
     function tick(){
-      if (video.readyState === video.HAVE_ENOUGH_DATA){
+//       if (video.readyState === video.HAVE_ENOUGH_DATA){
         snapshot();
 
         var markers = detector.detect(imageData);
         // drawCorners(markers);
         // drawId(markers);
         drawCenter(markers);
-      }
+//       }
     }
 
     function snapshot(){
