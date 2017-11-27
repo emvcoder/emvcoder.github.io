@@ -1,6 +1,4 @@
-<html>
-
-<head>
+<html><head>
   <title>Augmented Reality Marker Detector</title>
 
   <script type="text/javascript" src="libs/polyfill.js"></script> 
@@ -22,8 +20,8 @@
       canvas = document.getElementById("canvas");
       context = canvas.getContext("2d");
     
-      canvas.width = window.innerWidth/3;
-      canvas.height = window.innerHeight/3;
+      canvas.width = window.innerWidth/2;
+      canvas.height = window.innerHeight/2;
       
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
       if (navigator.getUserMedia){
@@ -116,6 +114,8 @@
       }
     }
 
+    let prevX = 0, prevY = 0;
+
     function drawCenter(markers) {
       for (let i = 0; i < markers.length; i++) {
         let corners = markers[i].corners;
@@ -132,52 +132,57 @@
         let x = (x0+x1+x2+x3)/4;
         let y = (y0+y1+y2+y3)/4;
 
+        let a = (Math.abs(x0 - x1) + Math.abs(y1 - y2) + Math.abs(x2 - x3) + Math.abs(y0 - y3))/4
+
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
+
+        mesh.translateX(-prevX);
+        mesh.translateY(-prevY);
+
+        prevX = x - window.innerWidth/4;
+        prevY = window.innerHeight/4 - y;
+
+        console.log(prevX, prevY)
+
+        mesh.translateX(prevX);
+        mesh.translateY(prevY);
+
+        renderer.render( scene, camera );
       }
     }
     
+    function init() {
+      camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+      camera.position.z = 600;
+      
 
+      scene = new THREE.Scene();
+      var geometry = new THREE.CubeGeometry(100, 100, 100);
+      var material = new THREE.MeshNormalMaterial();
+      mesh = new THREE.Mesh( geometry, material );
+      scene.add( mesh );
+      renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer.setPixelRatio( window.devicePixelRatio );
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
 
-	function init() {
-		camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-		camera.position.z = 400;
-		camera.position.x = 0;
-		camera.position.y = 0;
+      mesh.rotation.x = 0.8;
+    }
 
-		scene = new THREE.Scene();
-		var geometry = new THREE.CubeGeometry(100, 100, 100);
-		var material = new THREE.MeshNormalMaterial();;
-		mesh = new THREE.Mesh( geometry, material );
-		scene.add( mesh );
-		renderer = new THREE.WebGLRenderer({ alpha: true });
-		renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
+    function animate() {
+      requestAnimationFrame( animate );
 
-		mesh.rotation.x = 0.8;
-		renderer.render( scene, camera );
-	}
+      mesh.rotation.y += 0.005;
+    }
 
-	function animate() {
-		requestAnimationFrame( animate );
-
-		mesh.rotation.y += 0.005;
-
-		
-	}
-    
     window.onload = onLoad;
   </script>
 
 </head>
 
 <body style="font-family: monospace; margin: 0">
-  <center>
-    <video id="video" autoplay="true" style="display:none;"></video>
-    <canvas id="canvas" style="width:100vw; height:100vh; z-index: -1;"></canvas>
-  </center>
-
+  <video id="video" autoplay="true" style="display:none;"></video>
+  <canvas id="canvas" style="width:100vw; height:100vh; z-index: -1;" width="300" height="211"></canvas>
 </body>
-  
 </html>
