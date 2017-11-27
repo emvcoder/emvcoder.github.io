@@ -40,7 +40,6 @@
         navigator.getUserMedia({video: true}, successCallback, errorCallback);
         
         detector = new AR.Detector();
-	animate();
         init();
         requestAnimationFrame(tick);
       }
@@ -153,6 +152,7 @@
 		document.body.appendChild( renderer.domElement );
 
 		mesh.rotation.x = 0.8;
+		renderer.render( scene, camera );
 	}
 
 	function animate() {
@@ -160,7 +160,7 @@
 
 		mesh.rotation.y += 0.005;
 
-		renderer.render( scene, camera );
+		
 	}
     
     window.onload = onLoad;
