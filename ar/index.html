@@ -39,19 +39,17 @@
         
         detector = new AR.Detector();
 
-        requestAnimationFrame(tick);
+        setInterval(tick, 1000/60);
       }
     }
     
     function tick(){
-      requestAnimationFrame(tick);
-      
       if (video.readyState === video.HAVE_ENOUGH_DATA){
         snapshot();
 
         var markers = detector.detect(imageData);
-        drawCorners(markers);
-        drawId(markers);
+        // drawCorners(markers);
+        // drawId(markers);
         drawCenter(markers);
       }
     }
