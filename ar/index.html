@@ -139,9 +139,10 @@
 
         prevX = x - window.innerWidth/2;
         prevY = window.innerHeight/2 - y;
-	mesh.position.set(prevX+50, prevY-50, 100);
+	mesh.position.setX(prevX+50);
+	mesh.position.setY(prevY-50);
 
-        renderer.render( scene, camera );
+        renderer.render(scene, camera);
       }
     }
     
