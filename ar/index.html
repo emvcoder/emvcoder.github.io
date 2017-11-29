@@ -140,10 +140,8 @@
         mesh.translateX(-prevX);
         mesh.translateY(-prevY);
 
-        prevX = 2*x - window.innerWidth/4;
-        prevY = window.innerHeight/4 - 2*y;
-
-        console.log(prevX, prevY)
+        prevX = x - window.innerWidth/4;
+        prevY = window.innerHeight/4 - y;
 
         mesh.translateX(prevX);
         mesh.translateY(prevY);
