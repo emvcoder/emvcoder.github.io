@@ -137,8 +137,8 @@
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
 
-        prevX = x - window.innerWidth/4 + 100;
-        prevY = window.innerHeight/4 - y - 100;
+        prevX = x - window.innerWidth/4 + 200;
+        prevY = window.innerHeight/4 - y - 200;
 	      mesh.position.x = prevX;
         mesh.position.y = prevY;
 
@@ -161,7 +161,7 @@
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.body.appendChild( renderer.domElement );
 
-      mesh.rotation.x = 0.8;
+//       mesh.rotation.x = 0.8;
       renderer.render( scene, camera );
     }
 
