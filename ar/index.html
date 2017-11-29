@@ -1,10 +1,10 @@
 <html><head>
   <title>Augmented Reality Marker Detector</title>
 
-  <script type="text/javascript" src="libs/polyfill.js"></script> 
+  <script type="text/javascript" src="libs/polyfill.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
-  <script type="text/javascript" src="cv.js"></script> 
-  <script type="text/javascript" src="aruco.js"></script> 
+  <script type="text/javascript" src="cv.js"></script>
+  <script type="text/javascript" src="aruco.js"></script>
   <style>
 	  canvas {
 		  position: absolute;
@@ -14,18 +14,18 @@
     var video, canvas, context, imageData, detector;
     var camera, scene, renderer;
     var mesh;
-  
+
     function onLoad(){
       video = document.getElementById("video");
       canvas = document.getElementById("canvas");
       context = canvas.getContext("2d");
-    
+
       canvas.width = window.innerWidth/3;
       canvas.height = window.innerHeight/3;
-      
+
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
       if (navigator.getUserMedia){
-        
+
         function successCallback(stream){
           if (window.webkitURL) {
             video.src = window.webkitURL.createObjectURL(stream);
@@ -35,21 +35,21 @@
             video.src = stream;
           }
         }
-        
+
         function errorCallback(error){
         }
-        
+
         navigator.getUserMedia({video: true}, successCallback, errorCallback);
-        
+
         detector = new AR.Detector();
         init();
         requestAnimationFrame(tick);
       }
     }
-    
+
     function tick(){
       requestAnimationFrame(tick);
-      
+
       if (video.readyState === video.HAVE_ENOUGH_DATA){
         snapshot();
 
@@ -64,18 +64,18 @@
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     }
-          
+
     function drawCorners(markers){
       var corners, corner, i, j;
-    
+
       context.lineWidth = 3;
 
       for (i = 0; i !== markers.length; ++ i){
         corners = markers[i].corners;
-        
+
         context.strokeStyle = "red";
         context.beginPath();
-        
+
         for (j = 0; j !== corners.length; ++ j){
           corner = corners[j];
           context.moveTo(corner.x, corner.y);
@@ -85,7 +85,7 @@
 
         context.stroke();
         context.closePath();
-        
+
         context.strokeStyle = "green";
         context.strokeRect(corners[0].x - 2, corners[0].y - 2, 4, 4);
       }
@@ -93,19 +93,19 @@
 
     function drawId(markers){
       var corners, corner, x, y, i, j;
-      
+
       context.strokeStyle = "blue";
       context.lineWidth = 1;
-      
+
       for (i = 0; i !== markers.length; ++ i){
         corners = markers[i].corners;
-        
+
         x = Infinity;
         y = Infinity;
-        
+
         for (j = 0; j !== corners.length; ++ j){
           corner = corners[j];
-          
+
           x = Math.min(x, corner.x);
           y = Math.min(y, corner.y);
         }
@@ -139,17 +139,17 @@
 
         prevX = x - window.innerWidth/2;
         prevY = window.innerHeight/2 - y;
-	      
-	mesh.position.set(prevX, prevY, 0);
+	      mesh.position.x = prevX;
+        mesh.position.y = prevY;
 
-        renderer.render(scene, camera);
+        renderer.render( scene, camera );
       }
     }
-    
+
     function init() {
       camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-      camera.position.z = 100;
-      
+      camera.position.z = 600;
+
 
       scene = new THREE.Scene();
       var geometry = new THREE.CubeGeometry(100, 100, 100);
