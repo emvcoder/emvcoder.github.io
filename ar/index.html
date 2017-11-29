@@ -141,6 +141,9 @@
         prevY = window.innerHeight/4 - y - 100;
 	      mesh.position.x = prevX;
         mesh.position.y = prevY;
+	      
+	mesh.rotation.y += 0.005;
+	mesh.rotation.x += 0.005;
 
         renderer.render( scene, camera );
       }
