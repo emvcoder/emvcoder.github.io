@@ -137,14 +137,9 @@
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
 
-        mesh.translateX(-prevX);
-        mesh.translateY(-prevY);
-
-        prevX = x - window.innerWidth/4;
-        prevY = window.innerHeight/4 - y;
-
-        mesh.translateX(prevX);
-        mesh.translateY(prevY);
+        prevX = x - window.innerWidth/2;
+        prevY = window.innerHeight/2 - y;
+	mesh.position.set(prevX, prevY, 100);
 
         renderer.render( scene, camera );
       }
