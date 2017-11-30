@@ -41,7 +41,7 @@ function tick(){
         snapshot();
         // animate();
         var markers = detector.detect(imageData);
-        // drawCorners(markers);
+        drawCorners(markers);
         // drawId(markers);
         drawCenter(markers);
     }
@@ -119,10 +119,15 @@ function drawCenter(markers) {
         let x = (x0+x1+x2+x3)/4;
         let y = (y0+y1+y2+y3)/4;
 
-        let a = (Math.abs(x0 - x1) + Math.abs(y1 - y2) + Math.abs(x2 - x3) + Math.abs(y0 - y3))*1.2;
+        let AD = Math.sqrt(Math.pow(3*Math.abs(x0 - x3), 2)+Math.pow(3*Math.abs(y0 - y3), 2));
+        let AB = Math.sqrt(Math.pow(3*Math.abs(x0 - x1), 2)+Math.pow(3*Math.abs(y0 - y1), 2));
+        let BC = Math.sqrt(Math.pow(3*Math.abs(x1 - x2), 2)+Math.pow(3*Math.abs(y1 - y2), 2));
+        let CD = Math.sqrt(Math.pow(3*Math.abs(x2 - x3), 2)+Math.pow(3*Math.abs(y2 - y3), 2));
 
-        let xrotate = Math.abs(x0 - x1)/Math.abs(x2 - x3)-1;
-        let yrotate = Math.abs(y0 - y3)/Math.abs(y2 - y1)-1;
+        let a = (AB+BC+CD+AD)/4;
+
+        let xrotate = AD/BC;
+        let yrotate = AB/CD;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
@@ -140,6 +145,7 @@ function drawCenter(markers) {
 
         mesh.position.x = prevX;
         mesh.position.y = prevY;
+        mesh.position.z = a;
 
         // camera.position.x = -prevX;
         // camera.position.y = -prevY;
