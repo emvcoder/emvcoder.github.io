@@ -1,6 +1,7 @@
 var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout;
+let xrotate = 0, yrotate = 0;
 
 function onLoad(){
     video = document.getElementById("video");
@@ -126,8 +127,8 @@ function drawCenter(markers) {
 
         let a = (AB+BC+CD+AD)/4;
 
-        let xrotate = AD/BC;
-        let yrotate = AB/CD;
+        xrotate = xrotate + 0.005;
+        yrotate = yrotate + 0.005;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
@@ -153,8 +154,6 @@ function drawCenter(markers) {
         // mesh.rotation.y += 0.005;
         mesh.rotation.x = xrotate;
         mesh.rotation.y = yrotate;
-
-        console.log(xrotate)
 
         // clearTimeout(timeout);
         // timeout = setTimeout(removeEntity(markers[i].id), 1000);
