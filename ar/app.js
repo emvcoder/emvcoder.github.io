@@ -127,8 +127,8 @@ function drawCenter(markers) {
 
         let a = (AB+BC+CD+AD)/4;
 
-        xrotate = xrotate + 0.005;
-        yrotate = yrotate + 0.005;
+        xrotate = xrotate + 0.05;
+        yrotate = yrotate + 0.05;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
