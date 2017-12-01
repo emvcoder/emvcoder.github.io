@@ -176,7 +176,7 @@ function createObjectMesh(id, side) {
       geometry = new THREE.ConeGeometry( side/2, side, 64 );
       break;
     case 105:
-      geometry = new THREE.TetrahedronGeometry( side/2, 5 );
+      geometry = new THREE.CylinderGeometry(side, side, 2*side, 3);
       break;
 
     case 106:
@@ -191,9 +191,7 @@ function createObjectMesh(id, side) {
     case 109:
       geometry = new THREE.IcosahedronGeometry( side/2 );
       break;
-    case 110:
-      geometry = new THREE.CylinderGeometry(side, side, 2*side, 3);
-      break;
+    
     default:
       // geometry = new THREE.CubeGeometry(side, side, side);
       geometry = null;
