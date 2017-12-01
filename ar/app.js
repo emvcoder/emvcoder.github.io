@@ -157,7 +157,7 @@ function createObjectMesh(id, side) {
 
   switch (id) {
     case 1:
-      geometry = new THREE.CubeGeometry(side, side, side);
+      geometry = new THREE.ConeGeometry( side/2, side, 64 );
       break;
     case 2:
       geometry = new THREE.DodecahedronGeometry(side);
