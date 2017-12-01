@@ -1,6 +1,6 @@
 var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
-var mesh, timeout;
+var mesh, timeout = [];
 let xrotate = 0, yrotate = 0;
 
 function onLoad(){
@@ -146,8 +146,8 @@ function drawCenter(markers) {
         mesh.rotation.x = xrotate;
         mesh.rotation.y = yrotate;
 
-        clearTimeout(timeout);
-        timeout = setTimeout(removeEntity, 800, markers[i].id);
+        clearTimeout(timeout[markers[i].id]);
+        timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
     }
     renderer.render(scene, camera);
 }
