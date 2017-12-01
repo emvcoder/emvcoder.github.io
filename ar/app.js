@@ -145,8 +145,9 @@ function drawCenter(markers) {
 
         if (markers[i].id != 2) {
           mesh.rotation.y = yrotate;
+          mesh.rotation.x = xrotate;
         }
-        mesh.rotation.x = xrotate;
+        
         
         clearTimeout(timeout[markers[i].id]);
         timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
