@@ -143,10 +143,10 @@ function drawCenter(markers) {
         mesh.position.y = prevY;
         mesh.position.z = a/2;
 
-        if (markers[i].id != 1) {
+        // if (markers[i].id != 1) {
           mesh.rotation.y = yrotate;
           mesh.rotation.x = xrotate;
-        }
+        // }
 
 
         clearTimeout(timeout[markers[i].id]);
@@ -159,14 +159,41 @@ function createObjectMesh(id, side) {
   var geometry;
 
   switch (id) {
-    case 1:
+    case 100:
+      geometry = new THREE.CubeGeometry(side, side, side);
+      break;
+    case 101:
+      geometry = new THREE.CubeGeometry(side, 2*side, side);
+      // geometry = new THREE.DodecahedronGeometry(side);
+      break;
+    case 102:
+      geometry = new THREE.ConeGeometry( side/2, side, 4 );
+      break;
+    case 103:
+      geometry = new THREE.CylinderGeometry( side/2, side, 64 );
+      break;
+    case 104:
       geometry = new THREE.ConeGeometry( side/2, side, 64 );
       break;
-    case 2:
-      geometry = new THREE.DodecahedronGeometry(side);
+    case 105:
+      geometry = new THREE.ShpereGeometry( side/2, 32, 32 );
+      break;
+
+    case 106:
+      geometry = new THREE.TetrahedronGeometry( side/2 );
+      break;
+    case 107:
+      geometry = new THREE.OctahedronGeometry( side/2 );
+      break;
+    case 108:
+      geometry = new THREE.DodecahedronGeometry( side/2 );
+      break;
+    case 109:
+      geometry = new THREE.IcosahedronGeometry( side/2 );
       break;
     default:
-      geometry = new THREE.CubeGeometry(side, side, side);
+      // geometry = new THREE.CubeGeometry(side, side, side);
+      geometry = null;
   }
 
   var material = new THREE.MeshNormalMaterial();
