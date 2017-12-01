@@ -123,7 +123,7 @@ function drawCenter(markers) {
         let BC = Math.sqrt(Math.pow(3*Math.abs(x1 - x2), 2)+Math.pow(3*Math.abs(y1 - y2), 2));
         let CD = Math.sqrt(Math.pow(3*Math.abs(x2 - x3), 2)+Math.pow(3*Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)/4;
+        let a = (AB+BC+CD+AD)/8;
 
         xrotate = xrotate + 0.05;
         yrotate = yrotate + 0.05;
@@ -190,6 +190,9 @@ function createObjectMesh(id, side) {
       break;
     case 109:
       geometry = new THREE.IcosahedronGeometry( side/2 );
+      break;
+    case 110:
+      geometry = new THREE.CylinderGeometry(side, side, 2*side, 3);
       break;
     default:
       // geometry = new THREE.CubeGeometry(side, side, side);
