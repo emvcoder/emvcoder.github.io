@@ -176,7 +176,7 @@ function createObjectMesh(id, side) {
       geometry = new THREE.ConeGeometry( side/2, side, 64 );
       break;
     case 105:
-      geometry = new THREE.ShpereGeometry( side/2, 32, 32 );
+      // geometry = new THREE.ShpereGeometry( side/2, 16, 16 );
       break;
 
     case 106:
