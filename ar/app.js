@@ -136,27 +136,39 @@ function drawCenter(markers) {
 
         removeEntity(markers[i].id);
 
-        var geometry = new THREE.CubeGeometry(a, a, a);
-        var material = new THREE.MeshNormalMaterial();
-        mesh = new THREE.Mesh( geometry, material );
-        mesh.name = markers[i].id;
+        createObjectMesh(markers[i].id, a);
         scene.add(mesh);
 
         mesh.position.x = prevX;
         mesh.position.y = prevY;
         mesh.position.z = a/2;
 
-        // camera.position.x = -prevX;
-        // camera.position.y = -prevY;
-
-        // mesh.rotation.y += 0.005;
         mesh.rotation.x = xrotate;
         mesh.rotation.y = yrotate;
 
         clearTimeout(timeout);
-        timeout = setTimeout(removeEntity, 1000, markers[i].id);
+        timeout = setTimeout(removeEntity, 800, markers[i].id);
     }
     renderer.render(scene, camera);
+}
+
+function createObjectMesh(id, side) {
+  var geometry;
+
+  switch (id) {
+    case 1:
+      geometry = new THREE.CubeGeometry(side, side, side);
+      break;
+    case 2:
+      geometry = new THREE.DodecahedronGeometry(side);
+      break;
+    default:
+      geometry = new THREE.CubeGeometry(side, side, side);
+  }
+
+  var material = new THREE.MeshNormalMaterial();
+  mesh = new THREE.Mesh(geometry, material);
+  mesh.name = id;
 }
 
 function removeEntity(id) {
