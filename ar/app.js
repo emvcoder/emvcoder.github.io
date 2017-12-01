@@ -143,7 +143,7 @@ function drawCenter(markers) {
         mesh.position.y = prevY;
         mesh.position.z = a/2;
 
-        if (markers[i].id != 2) {
+        if (markers[i].id != 1) {
           mesh.rotation.y = yrotate;
           mesh.rotation.x = xrotate;
         }
