@@ -12,26 +12,24 @@ function onLoad(){
     canvas.height = window.innerHeight/3;
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    if (navigator.getUserMedia){
+    if (navigator.getUserMedia) {
+      function successCallback(stream) {
+          if (window.webkitURL) {
+          video.src = window.webkitURL.createObjectURL(stream);
+          } else if (video.mozSrcObject !== undefined) {
+          video.mozSrcObject = stream;
+          } else {
+          video.src = stream;
+          }
+      }
 
-    function successCallback(stream){
-        if (window.webkitURL) {
-        video.src = window.webkitURL.createObjectURL(stream);
-        } else if (video.mozSrcObject !== undefined) {
-        video.mozSrcObject = stream;
-        } else {
-        video.src = stream;
-        }
-    }
+      function errorCallback(error) {}
 
-    function errorCallback(error){
-    }
+      navigator.getUserMedia({video: true}, successCallback, errorCallback);
 
-    navigator.getUserMedia({video: true}, successCallback, errorCallback);
-
-    detector = new AR.Detector();
-    init();
-    requestAnimationFrame(tick);
+      detector = new AR.Detector();
+      init();
+      requestAnimationFrame(tick);
     }
 }
 
@@ -146,17 +144,17 @@ function drawCenter(markers) {
 
         mesh.position.x = prevX;
         mesh.position.y = prevY;
-        mesh.position.z = a;
+        mesh.position.z = a/2;
 
         // camera.position.x = -prevX;
         // camera.position.y = -prevY;
-            
+
         // mesh.rotation.y += 0.005;
         mesh.rotation.x = xrotate;
         mesh.rotation.y = yrotate;
 
-        // clearTimeout(timeout);
-        // timeout = setTimeout(removeEntity(markers[i].id), 1000);
+        clearTimeout(timeout);
+        timeout = setTimeout(removeEntity(markers[i].id), 1000);
     }
     renderer.render(scene, camera);
 }
