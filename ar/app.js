@@ -123,7 +123,7 @@ function drawCenter(markers) {
         let BC = Math.sqrt(Math.pow(3*Math.abs(x1 - x2), 2)+Math.pow(3*Math.abs(y1 - y2), 2));
         let CD = Math.sqrt(Math.pow(3*Math.abs(x2 - x3), 2)+Math.pow(3*Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)/8;
+        let a = (AB+BC+CD+AD)/6;
 
         xrotate = xrotate + 0.05;
         yrotate = yrotate + 0.05;
