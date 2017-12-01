@@ -154,7 +154,7 @@ function drawCenter(markers) {
         mesh.rotation.y = yrotate;
 
         clearTimeout(timeout);
-        timeout = setTimeout(removeEntity(markers[i].id), 1000);
+        timeout = setTimeout(removeEntity, 1000, markers[i].id);
     }
     renderer.render(scene, camera);
 }
