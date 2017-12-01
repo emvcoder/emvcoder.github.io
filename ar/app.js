@@ -3,6 +3,8 @@ var camera, scene, renderer;
 var mesh, timeout = [];
 let xrotate = 0, yrotate = 0;
 
+let marker_s = 40*40;
+
 function onLoad(){
     video = document.getElementById("video");
     canvas = document.getElementById("canvas");
@@ -123,6 +125,8 @@ function drawCenter(markers) {
         let BC = Math.sqrt(Math.pow(3*Math.abs(x1 - x2), 2)+Math.pow(3*Math.abs(y1 - y2), 2));
         let CD = Math.sqrt(Math.pow(3*Math.abs(x2 - x3), 2)+Math.pow(3*Math.abs(y2 - y3), 2));
 
+        Math.abs(y0-y3)*Math.max(AB, CD);
+
         let a = (AB+BC+CD+AD)/6;
 
         xrotate = xrotate + 0.05;
@@ -159,7 +163,7 @@ function createObjectMesh(id, side) {
   var geometry;
 
   switch (id) {
-    case 100:
+    case 7:
       geometry = new THREE.CubeGeometry(side, side, side);
       break;
     case 101:
@@ -208,7 +212,7 @@ function removeEntity(id) {
 }
 
 function init() {
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
     camera.position.z = 1000;
 
     scene = new THREE.Scene();
