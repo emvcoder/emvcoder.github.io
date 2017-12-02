@@ -120,28 +120,35 @@ function drawCenter(markers) {
         let x = (x0+x1+x2+x3)/4;
         let y = (y0+y1+y2+y3)/4;
 
-        let AD = Math.sqrt(Math.pow(3*Math.abs(x0 - x3), 2)+Math.pow(3*Math.abs(y0 - y3), 2));
-        let AB = Math.sqrt(Math.pow(3*Math.abs(x0 - x1), 2)+Math.pow(3*Math.abs(y0 - y1), 2));
-        let BC = Math.sqrt(Math.pow(3*Math.abs(x1 - x2), 2)+Math.pow(3*Math.abs(y1 - y2), 2));
-        let CD = Math.sqrt(Math.pow(3*Math.abs(x2 - x3), 2)+Math.pow(3*Math.abs(y2 - y3), 2));
+        let AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
+        let AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
+        let BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
+        let CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)/6;
+        let a = (AB+BC+CD+AD)*2/3;
 
         // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
         // let alpha = (Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
 
-        
+        // context.fillStyle = "blue";
+        // context.fillRect(x3+CD/2, Math.abs(y2-y3)+Math.min(y2, y3), 4, 4);        
 
-        let OR = Math.sqrt(Math.pow(CD/2-x, 2) + Math.pow((y3+y3)/2 - y, 2));
+        let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
 
-        let alpha = Math.acos(OR/CD);
+        let k = AB > CD ? -1 : 1;
 
+        let alpha1 = Math.asin(Math.min(AD, CD)/Math.max(CD, AD));
+        let alpha2 = Math.asin(Math.min(AB, BC)/Math.max(BC, AB));
+
+        let alpha = k*(alpha1+alpha2)/2;
         // console.log(alpha)
 
         // let betha = (Math.PI/2-Math.atan((CD/2 - x)/));
 
         // console.log(betha)
+
+        console.log(alpha)
 
         xrotate = alpha;
         yrotate = yrotate + 0.05;
