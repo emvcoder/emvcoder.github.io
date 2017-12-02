@@ -129,8 +129,20 @@ function drawCenter(markers) {
 
         // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
-        let alpha = (Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
-        console.log(alpha)
+        // let alpha = (Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
+
+        
+
+        let OR = Math.sqrt(Math.pow(CD/2-x, 2) + Math.pow((y3+y3)/2 - y, 2));
+
+        let alpha = Math.acos(OR/CD);
+
+        // console.log(alpha)
+
+        // let betha = (Math.PI/2-Math.atan((CD/2 - x)/));
+
+        // console.log(betha)
+
         xrotate = alpha;
         yrotate = yrotate + 0.05;
 
