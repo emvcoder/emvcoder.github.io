@@ -127,12 +127,12 @@ function drawCenter(markers) {
 
         let a = (AB+BC+CD+AD)/6;
 
-        let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
+        // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
         let alpha = k*(Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
         console.log(alpha)
         xrotate = alpha;
-        // yrotate = yrotate + 0.05;
+        yrotate = yrotate + 0.05;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
@@ -149,7 +149,7 @@ function drawCenter(markers) {
         mesh.position.y = prevY;
         mesh.position.z = a/Math.sqrt(2);
 
-        // mesh.rotation.y = yrotate;
+        mesh.rotation.y = yrotate;
         mesh.rotation.x = xrotate;
 
         clearTimeout(timeout[markers[i].id]);
