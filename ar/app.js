@@ -52,6 +52,7 @@ function snapshot(){
 }
 
 function drawCorners(markers){
+    "use strict";
     var corners, corner, i, j;
 
     context.lineWidth = 3;
@@ -78,6 +79,7 @@ function drawCorners(markers){
 }
 
 function drawId(markers){
+    "use strict";
     var corners, corner, x, y, i, j;
 
     context.strokeStyle = "blue";
@@ -100,10 +102,10 @@ function drawId(markers){
     }
 }
 
-let prevX = 0, prevY = 0;
+var prevX = 0, prevY = 0;
 
 function drawCenter(markers) {
-    for (let i = 0; i < markers.length; i++) {
+    for (var i = 0; i < markers.length; i++) {
         var corners = markers[i].corners;
 
         var x0 = corners[0].x,
