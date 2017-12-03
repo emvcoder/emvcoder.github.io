@@ -11,7 +11,7 @@ function onLoad(){
     canvas.width = window.innerWidth/3;
     canvas.height = window.innerHeight/3;
 
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (navigator.getUserMedia) {
       function successCallback(stream) {
           if (window.webkitURL) {
@@ -25,7 +25,7 @@ function onLoad(){
 
       function errorCallback(error) {}
 
-      navigator.getUserMedia({video: true}, successCallback, errorCallback);
+      navigator.mediaDevices.getUserMedia({video: true}, successCallback, errorCallback);
 
       detector = new AR.Detector();
       init();
@@ -36,14 +36,14 @@ function onLoad(){
 function tick(){
     requestAnimationFrame(tick);
 
-    if (video.readyState === video.HAVE_ENOUGH_DATA){
+    // if (video.readyState === video.HAVE_ENOUGH_DATA){
         snapshot();
         // animate();
         var markers = detector.detect(imageData);
         drawCorners(markers);
         // drawId(markers);
         drawCenter(markers);
-    }
+    // }
 }
 
 function snapshot(){
