@@ -141,7 +141,7 @@ function drawCenter(markers) {
         let alpha1 = Math.asin(Math.min(AD, CD)/Math.max(CD, AD));
         let alpha2 = Math.asin(Math.min(AB, BC)/Math.max(BC, AB));
 
-        let alpha = k*(alpha1+alpha2)/2;
+        let alpha = k*(alpha1+alpha2);
         // console.log(alpha)
 
         // let betha = (Math.PI/2-Math.atan((CD/2 - x)/));
