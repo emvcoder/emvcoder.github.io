@@ -115,18 +115,18 @@ function drawCenter(markers) {
             x3 = corners[3].x,
             y3 = corners[3].y;
 
-        // let arrx = [x1, x2, x3];
-        // let arry = [y1, y2, y3];
-        // let xnum = 0,
-        //     ynum = 0;
+        var arrx = [x1, x2, x3];
+        var arry = [y1, y2, y3];
+        var xnum = 0,
+            ynum = 0;
 
-        // arry.forEach(ys => {
-        //     if (ys > y0) ynum++;
-        // })
+        arry.forEach(function(ys) {
+            if (ys > y0) ynum++;
+        })
 
-        // arrx.forEach(function(xs) {
-        //     if (x0 > xs) xnum++;
-        // })
+        arrx.forEach(function(xs) {
+            if (x0 > xs) xnum++;
+        })
 
         var x = (x0+x1+x2+x3)/4;
         var y = (y0+y1+y2+y3)/4;
