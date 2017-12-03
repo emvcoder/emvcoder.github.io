@@ -117,11 +117,17 @@ function drawCenter(markers) {
             x3 = corners[3].x,
             y3 = corners[3].y;
 
-        let arr = [y1, y2, y3];
-        let num = 0;
+        let arrx = [x1, x2, x3];
+        let arry = [y1, y2, y3];
+        let xnum = 0,
+            ynum = 0;
 
-        arr.forEach(s => {
-            if (s > y0) num++;
+        arry.forEach(ys => {
+            if (ys > y0) ynum++;
+        })
+
+        arrx.forEach(function(xs) {
+            if (x0 > xs) xnum++;
         })
 
         let x = (x0+x1+x2+x3)/4;
@@ -141,22 +147,26 @@ function drawCenter(markers) {
         // context.fillStyle = "blue";
         // context.fillRect(x3+CD/2, Math.abs(y2-y3)+Math.min(y2, y3), 4, 4);        
 
-        let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
+        // let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
 
         let k = (AB > CD) ? 1 : -1;
 
-        let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
+        // let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
 
-        let t = AD > BC ? -1 : 1;
+        let t = AD > BC ? 1 : -1;
 
-        // if (num > 1) {
-        //     k = -k;
-        //     t = -t;
-        // }
+        if (ynum > 1) {
+            k = -k;
+            t = -t;
+        }
 
-        let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
+        // let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
 
-        // if (num > 2) {
+        let alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
+        let betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
+        // console.log(alpha)
+
+        // if (xnum > 2) {
         //     let m = betha;
         //     betha = alpha;
         //     alpha = betha;
@@ -164,9 +174,9 @@ function drawCenter(markers) {
 
         // let gamma = Math.atan2(Math.abs(y0-y3), Math.abs(x0-x3));s
 
-        xrotate = Math.PI/2+alpha;
-        zrotate = betha;
-        // yrotate = yrotate+0.05;
+        xrotate = alpha;
+        yrotate = betha;
+        zrotate = zrotate+0.05;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
