@@ -11,7 +11,7 @@ function onLoad(){
     canvas.width = window.innerWidth/3;
     canvas.height = window.innerHeight/3;
 
-    // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (navigator.getUserMedia) {
       function successCallback(stream) {
           if (window.webkitURL) {
