@@ -1,7 +1,7 @@
 var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
-let xrotate = 0, yrotate = 0;
+let xrotate = 0, yrotate = 0, zrotate = 0;
 
 let marker_s = 40*40;
 
@@ -117,6 +117,13 @@ function drawCenter(markers) {
             x3 = corners[3].x,
             y3 = corners[3].y;
 
+        let arr = [y1, y2, y3];
+        let num = 0;
+
+        arr.forEach(s => {
+            if (s > y0) num++;
+        })
+
         let x = (x0+x1+x2+x3)/4;
         let y = (y0+y1+y2+y3)/4;
 
@@ -125,7 +132,7 @@ function drawCenter(markers) {
         let BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         let CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)/2;
+        let a = (AB+BC+CD+AD)*2/3;
 
         // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
@@ -136,22 +143,30 @@ function drawCenter(markers) {
 
         let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
 
-        let k = AB > CD ? -1 : 1;
+        let k = (AB > CD) ? 1 : -1;
 
-        let alpha1 = Math.asin(Math.min(AD, CD)/Math.max(CD, AD));
-        let alpha2 = Math.asin(Math.min(AB, BC)/Math.max(BC, AB));
+        let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
 
-        let alpha = k*(alpha1+alpha2);
-        // console.log(alpha)
+        let t = AD > BC ? -1 : 1;
 
-        // let betha = (Math.PI/2-Math.atan((CD/2 - x)/));
+        // if (num > 1) {
+        //     k = -k;
+        //     t = -t;
+        // }
 
-        // console.log(betha)
+        let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
 
-        console.log(alpha)
+        // if (num > 2) {
+        //     let m = betha;
+        //     betha = alpha;
+        //     alpha = betha;
+        // }
 
-        xrotate = alpha;
-        yrotate = yrotate + 0.05;
+        // let gamma = Math.atan2(Math.abs(y0-y3), Math.abs(x0-x3));s
+
+        xrotate = Math.PI/2+alpha;
+        zrotate = betha;
+        // yrotate = yrotate+0.05;
 
         context.fillStyle = "red";
         context.fillRect(x - 2, y - 2, 4, 4);
@@ -168,8 +183,9 @@ function drawCenter(markers) {
         mesh.position.y = prevY;
         mesh.position.z = a/Math.sqrt(2);
 
-        mesh.rotation.y = yrotate;
+        mesh.rotation.z = zrotate;
         mesh.rotation.x = xrotate;
+        mesh.rotation.y = yrotate;
 
         clearTimeout(timeout[markers[i].id]);
         timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
