@@ -125,7 +125,7 @@ function drawCenter(markers) {
         let BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         let CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)*6;
+        let a = (AB+BC+CD+AD)*3/4;
 
         // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
