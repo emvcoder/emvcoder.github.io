@@ -25,7 +25,7 @@ function onLoad(){
 
       function errorCallback(error) {}
 
-      navigator.mediaDevices.getUserMedia({video: true}, successCallback, errorCallback);
+      navigator.getUserMedia({video: true}, successCallback, errorCallback);
 
       detector = new AR.Detector();
       init();
