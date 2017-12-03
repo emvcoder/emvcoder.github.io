@@ -1,9 +1,7 @@
 var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
-let xrotate = 0, yrotate = 0, zrotate = 0;
-
-let marker_s = 40*40;
+var xrotate = 0, yrotate = 0, zrotate = 0;
 
 function onLoad(){
     video = document.getElementById("video");
@@ -106,9 +104,9 @@ let prevX = 0, prevY = 0;
 
 function drawCenter(markers) {
     for (let i = 0; i < markers.length; i++) {
-        let corners = markers[i].corners;
+        var corners = markers[i].corners;
 
-        let x0 = corners[0].x,
+        var x0 = corners[0].x,
             y0 = corners[0].y,
             x1 = corners[1].x,
             y1 = corners[1].y,
@@ -117,12 +115,12 @@ function drawCenter(markers) {
             x3 = corners[3].x,
             y3 = corners[3].y;
 
-        let arrx = [x1, x2, x3];
-        let arry = [y1, y2, y3];
-        let xnum = 0,
+        var arrx = [x1, x2, x3];
+        var arry = [y1, y2, y3];
+        var xnum = 0,
             ynum = 0;
 
-        arry.forEach(ys => {
+        arry.forEach(function(ys) {
             if (ys > y0) ynum++;
         })
 
@@ -130,15 +128,15 @@ function drawCenter(markers) {
             if (x0 > xs) xnum++;
         })
 
-        let x = (x0+x1+x2+x3)/4;
-        let y = (y0+y1+y2+y3)/4;
+        var x = (x0+x1+x2+x3)/4;
+        var y = (y0+y1+y2+y3)/4;
 
-        let AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
-        let AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
-        let BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
-        let CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
+        var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
+        var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
+        var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
+        var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        let a = (AB+BC+CD+AD)*2/3;
+        var a = (AB+BC+CD+AD)/3;
 
         // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
 
@@ -149,11 +147,11 @@ function drawCenter(markers) {
 
         // let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
 
-        let k = (AB > CD) ? 1 : -1;
+        var k = (AB > CD) ? 1 : -1;
 
         // let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
 
-        let t = AD > BC ? 1 : -1;
+        var t = AD > BC ? 1 : -1;
 
         if (ynum > 1) {
             k = -k;
@@ -162,8 +160,8 @@ function drawCenter(markers) {
 
         // let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
 
-        let alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
-        let betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
+        var alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
+        var betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
         // console.log(alpha)
 
         // if (xnum > 2) {
