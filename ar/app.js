@@ -27,26 +27,26 @@ function onLoad(){
 
     function errorCallback(error) {}
 
-    navigator.mediaDevices.enumerateDevices()
-        .then(function(devices) {
-            var videoDevices = [0, 0];
-            var videoDeviceIndex = 0;
-            devices.forEach(function(device) {
-                if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
-            });
-            const constraints = {deviceId:{ exact: videoDevices[1] }};
+//     navigator.mediaDevices.enumerateDevices()
+//         .then(function(devices) {
+//             var videoDevices = [0, 0];
+//             var videoDeviceIndex = 0;
+//             devices.forEach(function(device) {
+//                 if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
+//             });
+//             const constraints = {deviceId:{ exact: videoDevices[1] }};
 
             navigator.mediaDevices
                 .getUserMedia({
-                    video: constraints
+                    video: true
                 })
                 .then(successCallback);
 
                 detector = new AR.Detector();
                 init();
                 requestAnimationFrame(tick);
-            });
-        .catch(console.log)
+//             });
+//         .catch(console.log)
 }
 
 function tick(){
