@@ -23,6 +23,7 @@ function onLoad(){
           video.src = stream;
           }
       }
+    }
 
     function errorCallback(error) {}
 
@@ -31,13 +32,9 @@ function onLoad(){
             var videoDevices = [0, 0];
             var videoDeviceIndex = 0;
             devices.forEach(function(device) {
-                if (device.kind === "videoinput") {
-                    videoDevices[videoDeviceIndex++] = device.deviceId;
-                    
-                }
-                alert("YEP!");
+                if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
             });
-            const constraints = {deviceId:{ exact: videoDevices[0] }};
+            const constraints = {deviceId:{ exact: videoDevices[1] }};
 
             navigator.mediaDevices
                 .getUserMedia({
