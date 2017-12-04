@@ -33,8 +33,9 @@ function onLoad(){
             devices.forEach(function(device) {
                 if (device.kind === "videoinput") {
                     videoDevices[videoDeviceIndex++] = device.deviceId;
-                    alert("YEP!");
+                    
                 }
+                alert("YEP!");
             });
             const constraints = {deviceId:{ exact: videoDevices[0] }};
 
