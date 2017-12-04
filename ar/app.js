@@ -37,7 +37,7 @@ function onLoad(){
     //         const constraints = {deviceId:{ exact: videoDevices[1] }};
 
             navigator.getUserMedia({
-                    video: constraints
+                    video: true
                 }, successCallback, null)
                 
 
