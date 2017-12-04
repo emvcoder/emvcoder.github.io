@@ -27,24 +27,24 @@ function onLoad(){
 
     function errorCallback(error) {}
 
-    navigator.mediaDevices.enumerateDevices()
-        .then(function(devices) {
-            var videoDevices = [0, 0];
-            var videoDeviceIndex = 0;
-            devices.forEach(function(device) {
-                if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
-            });
-            const constraints = {deviceId:{ exact: videoDevices[1] }};
+    // navigator.mediaDevices.enumerateDevices()
+    //     .then(function(devices) {
+    //         var videoDevices = [0, 0];
+    //         var videoDeviceIndex = 0;
+    //         devices.forEach(function(device) {
+    //             if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
+    //         });
+    //         const constraints = {deviceId:{ exact: videoDevices[1] }};
 
             navigator.getUserMedia({
                     video: constraints
-                })
-                .then(successCallback);
+                }, successCallback, null)
+                
 
                 detector = new AR.Detector();
                 init();
                 requestAnimationFrame(tick);
-            });
+            // });
 }
 
 function tick(){
