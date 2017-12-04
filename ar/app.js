@@ -26,23 +26,23 @@ function onLoad(){
 
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	
-		function successCallback(stream) {
-			if (window.webkitURL) {
-				video.src = window.webkitURL.createObjectURL(stream);
-			} else if (video.mozSrcObject !== undefined) {
-				video.mozSrcObject = stream;
-			} else {
-				video.src = stream;
-			}
+	function successCallback(stream) {
+		if (window.webkitURL) {
+			video.src = window.webkitURL.createObjectURL(stream);
+		} else if (video.mozSrcObject !== undefined) {
+			video.mozSrcObject = stream;
+		} else {
+			video.src = stream;
 		}
+	}
 
-		function errorCallback(error) {}
+	function errorCallback(error) {}
 
-		navigator.getUserMedia({video: {facingMode: "environment"} }, successCallback, errorCallback);
+	navigator.getUserMedia({video: {facingMode: "environment"} }, successCallback, errorCallback);
 
-		detector = new AR.Detector();
-		init();
-		requestAnimationFrame(tick);
+	detector = new AR.Detector();
+	init();
+	requestAnimationFrame(tick);
 }
 
 function tick(){
