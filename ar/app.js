@@ -12,6 +12,7 @@ function onLoad(){
     canvas.height = window.innerHeight/3;
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
     if (navigator.getUserMedia) {
       function successCallback(stream) {
           if (window.webkitURL) {
@@ -23,13 +24,19 @@ function onLoad(){
           }
       }
 
-      function errorCallback(error) {}
+    function errorCallback(error) {}
 
-    const constraints = {
-        advanced: [{
-            facingMode: "environment"
-        }]
-    };
+    navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+            var videoDevices = [0, 0];
+            var videoDeviceIndex = 0;
+            devices.forEach(function(device) {
+                if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
+            });
+        });
+
+    const constraints = {deviceId:{ exact: videoDevices[1] }};
+
     navigator.mediaDevices
         .getUserMedia({
             video: constraints
@@ -45,14 +52,10 @@ function onLoad(){
 function tick(){
     requestAnimationFrame(tick);
 
-    // if (video.readyState === video.HAVE_ENOUGH_DATA){
-        snapshot();
-        // animate();
-        var markers = detector.detect(imageData);
-        drawCorners(markers);
-        // drawId(markers);
-        drawCenter(markers);
-    // }
+    snapshot();
+    var markers = detector.detect(imageData);
+    drawCorners(markers);
+    drawCenter(markers);
 }
 
 function snapshot(){
@@ -150,18 +153,7 @@ function drawCenter(markers) {
 
         var a = (AB+BC+CD+AD)*2/3;
 
-        // var k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
-
-        // // let alpha = (Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
-
-        // // context.fillStyle = "blue";
-        // // context.fillRect(x3+CD/2, Math.abs(y2-y3)+Math.min(y2, y3), 4, 4);        
-
-        // // let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
-
         var k = (AB > CD) ? 1 : -1;
-
-        // // let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
 
         var t = AD > BC ? 1 : -1;
 
@@ -169,27 +161,12 @@ function drawCenter(markers) {
            k = -k;
            t = -t;
         }
-
-        // // let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
-
         var alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
         var betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
-        // // console.log(alpha)
-
-        // // if (xnum > 2) {
-        // //     let m = betha;
-        // //     betha = alpha;
-        // //     alpha = betha;
-        // // }
-
-        // // let gamma = Math.atan2(Math.abs(y0-y3), Math.abs(x0-x3));s
 
         xrotate = alpha;
         yrotate = betha;
         zrotate = zrotate+0.05;
-
-        // context.fillStyle = "red";
-        // context.fillRect(x - 2, y - 2, 4, 4);
 
         prevX = (3*x - window.innerWidth/2);
         prevY = (window.innerHeight/2 - 3*y);
@@ -222,7 +199,6 @@ function createObjectMesh(id, side) {
             break;
         case 101:
             geometry = new THREE.CubeGeometry(side, 2*side, side);
-            // geometry = new THREE.DodecahedronGeometry(side);
             break;
         case 102:
             geometry = new THREE.ConeGeometry(side/2, side, 4);
@@ -271,10 +247,6 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
-}
-
-function animate() {
-    mesh.rotation.y += 0.005;
 }
 
 window.onload = onLoad;
