@@ -25,12 +25,16 @@ function onLoad(){
 
       function errorCallback(error) {}
 
-      navigator.getUserMedia({
-        video: true, 
+    const constraints = {
         advanced: [{
             facingMode: "environment"
         }]
-      }, successCallback, errorCallback);
+    };
+    navigator.mediaDevices
+        .getUserMedia({
+            video: constraints
+        })
+        .then(successCallback);
 
       detector = new AR.Detector();
       init();
