@@ -11,19 +11,6 @@ function onLoad(){
 
 	canvas.width = window.innerWidth/scale;
 	canvas.height = window.innerHeight/scale;
-
-	function successCallback(stream) {
-		if (window.webkitURL) {
-			video.src = window.webkitURL.createObjectURL(stream);
-		} else if (video.mozSrcObject !== undefined) {
-			video.mozSrcObject = stream;
-		} else {
-			video.src = stream;
-		}
-	}
-
-	function errorCallback(error) {}
-
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	
 	function successCallback(stream) {
