@@ -2,6 +2,7 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
+var scale = 1;
 
 function onLoad(){
 	video = document.getElementById("video");
@@ -24,7 +25,7 @@ function onLoad(){
 	function errorCallback(error) {}
 
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-	if (navigator.getUserMedia) {
+	
 		function successCallback(stream) {
 			if (window.webkitURL) {
 				video.src = window.webkitURL.createObjectURL(stream);
@@ -42,7 +43,6 @@ function onLoad(){
 		detector = new AR.Detector();
 		init();
 		requestAnimationFrame(tick);
-	}
 }
 
 function tick(){
@@ -104,6 +104,7 @@ function drawId(markers){
 		y = Math.min(y, corner.y);
 	}
 
+	console.log(markers[i].id)
 	context.strokeText(markers[i].id, x, y)
 	}
 }
@@ -160,15 +161,15 @@ function drawCenter(markers) {
 		var alpha = 3*k*Math.atan((Math.min(AB, CD) - Math.max(AB, CD))/Math.abs(y0 - y3));
 		var betha = 3*t*Math.atan((Math.min(BC, AD) - Math.max(BC, AD))/Math.abs(y1 - y2));
 
-		if (xnum > 1) {
-			var corner_s = alpha;
-			alpha = betha;
-			betha = alpha;
-		}
+		// if (xnum > 1) {
+		// 	var corner_s = alpha;
+		// 	alpha = betha;
+		// 	betha = alpha;
+		// }
 
 		xrotate = alpha;
-		zrotate = betha;
-		xrotate = xrotate+0.05;
+		yrotate = betha;
+		zrotate = zrotate+0.05;
 
 		prevX = (x - window.innerWidth/2);
 		prevY = (window.innerHeight/2 - y);
@@ -181,7 +182,7 @@ function drawCenter(markers) {
 		mesh.position.x = prevX;
 		mesh.position.y = prevY;
 		mesh.position.z = a/Math.sqrt(2);
-
+a
 		mesh.rotation.z = zrotate;
 		mesh.rotation.x = xrotate;
 		mesh.rotation.y = yrotate;
