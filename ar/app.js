@@ -27,13 +27,13 @@ function onLoad(){
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	
 	function successCallback(stream) {
-		if (window.webkitURL) {
-			video.src = window.webkitURL.createObjectURL(stream);
-		} else if (video.mozSrcObject !== undefined) {
-			video.mozSrcObject = stream;
-		} else {
+// 		if (window.webkitURL) {
+// 			video.src = window.webkitURL.createObjectURL(stream);
+// 		} else if (video.mozSrcObject !== undefined) {
+// 			video.mozSrcObject = stream;
+// 		} else {
 			video.src = stream;
-		}
+// 		}
 	}
 
 	function errorCallback(error) {}
