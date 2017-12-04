@@ -46,6 +46,7 @@ function onLoad(){
                 init();
                 requestAnimationFrame(tick);
             });
+        .catch(console.log)
 }
 
 function tick(){
