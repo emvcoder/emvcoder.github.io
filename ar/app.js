@@ -2,15 +2,15 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
-var scale = 1;
+// var scale = 1;
 
 function onLoad(){
 	video = document.getElementById("video");
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 
-	canvas.width = window.innerWidth/scale;
-	canvas.height = window.innerHeight/scale;
+	canvas.width = window.innerWidth/2;
+	canvas.height = window.innerHeight/2;
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	
 	function successCallback(stream) {
@@ -124,8 +124,8 @@ function drawCenter(markers) {
 			if (x0 > xs) xnum++;
 		})
 
-		var x = (x0+x1+x2+x3)*scale/4;
-		var y = (y0+y1+y2+y3)*scale/4;
+		var x = (x0+x1+x2+x3)*2/4;
+		var y = (y0+y1+y2+y3)*2/4;
 
 		// context.fillStyle = "blue";
 		// context.fillRect(x-2, y-2, 4, 4);
@@ -135,7 +135,7 @@ function drawCenter(markers) {
 		var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2))*scale;
 		var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2))*scale;
 
-		var a = (AB+BC+CD+AD)*scale/4;
+		var a = (AB+BC+CD+AD)*2/4;
 
 		var k = (AB > CD) ? 1 : -1;
 
