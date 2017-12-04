@@ -32,7 +32,7 @@ function onLoad(){
     //         });
     //         const constraints = {deviceId:{ exact: videoDevices[1] }};
 
-    getUserMedia({ video: true }, successCallback)
+    getUserMedia({ video: {facingMode: "environment"} }, successCallback)
 
     detector = new AR.Detector();
     init();
