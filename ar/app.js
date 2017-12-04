@@ -33,20 +33,18 @@ function onLoad(){
             devices.forEach(function(device) {
                 if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
             });
-        });
+            const constraints = {deviceId:{ exact: videoDevices[1] }};
 
-    const constraints = {deviceId:{ exact: videoDevices[1] }};
+            navigator.mediaDevices
+                .getUserMedia({
+                    video: constraints
+                })
+                .then(successCallback);
 
-    navigator.mediaDevices
-        .getUserMedia({
-            video: constraints
-        })
-        .then(successCallback);
-
-      detector = new AR.Detector();
-      init();
-      requestAnimationFrame(tick);
-    }
+                detector = new AR.Detector();
+                init();
+                requestAnimationFrame(tick);
+            });
 }
 
 function tick(){
@@ -151,7 +149,7 @@ function drawCenter(markers) {
         var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        var a = (AB+BC+CD+AD)*2/3;
+        var a = (AB+BC+CD+AD)/3;
 
         var k = (AB > CD) ? 1 : -1;
 
@@ -161,8 +159,14 @@ function drawCenter(markers) {
            k = -k;
            t = -t;
         }
-        var alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
-        var betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
+        var alpha = 3*k*Math.atan((Math.min(AB, CD) - Math.max(AB, CD))/Math.abs(y0 - y3));
+        var betha = 3*t*Math.atan((Math.min(BC, AD) - Math.max(BC, AD))/Math.abs(y1 - y2));
+
+        if (xnum > 1) {
+            var corner_s = alpha;
+            alpha = betha;
+            betha = alpha;
+        }
 
         xrotate = alpha;
         yrotate = betha;
@@ -172,8 +176,8 @@ function drawCenter(markers) {
         prevY = (window.innerHeight/2 - 3*y);
 
         removeEntity(markers[i].id);
-
         createObjectMesh(markers[i].id, a);
+
         scene.add(mesh);
 
         mesh.position.x = prevX;
