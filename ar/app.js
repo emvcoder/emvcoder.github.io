@@ -33,7 +33,7 @@ function onLoad(){
             devices.forEach(function(device) {
                 if (device.kind === "videoinput") videoDevices[videoDeviceIndex++] = device.deviceId;    
             });
-            const constraints = {deviceId:{ exact: videoDevices[1] }};
+            const constraints = {deviceId:{ exact: videoDevices[0] }};
 
             navigator.mediaDevices
                 .getUserMedia({
