@@ -130,12 +130,12 @@ function drawCenter(markers) {
 		// context.fillStyle = "blue";
 		// context.fillRect(x-2, y-2, 4, 4);
 
-		var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2))*scale;
-		var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2))*scale;
-		var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2))*scale;
-		var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2))*scale;
+		var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2))*2;
+		var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2))*2;
+		var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2))*2;
+		var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2))*2;
 
-		var a = (AB+BC+CD+AD)*2/4;
+		var a = (AB+BC+CD+AD)/4;
 
 		var k = (AB > CD) ? 1 : -1;
 
