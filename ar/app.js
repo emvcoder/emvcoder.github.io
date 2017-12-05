@@ -2,7 +2,7 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
-var scale = 1.5;
+var scale = 2.5;
 
 function onLoad(){
     video = document.getElementById("video");
