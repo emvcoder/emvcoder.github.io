@@ -138,7 +138,7 @@ function drawCenter(markers) {
 
         var k = (AB > CD) ? 1 : -1;
 
-        var t = AD > BC ? -1 : 1;
+        var t = AD > BC ? 1 : -1;
 
         if (ynum > 1) {
            k = -k;
