@@ -153,9 +153,9 @@ function drawCenter(markers) {
         //  betha = alpha;
         // }
 
-        xrotate = xrotate + 0.05;
-        yrotate = yrotate + 0.05;
-        zrotate = zrotate + 0.05;
+//         xrotate = xrotate + 0.05;
+//         yrotate = yrotate + 0.05;
+//         zrotate = zrotate + 0.05;
 
         prevX = (scale*x - window.innerWidth/2);
         prevY = (window.innerHeight/2 - scale*y);
