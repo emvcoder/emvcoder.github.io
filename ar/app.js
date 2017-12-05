@@ -176,6 +176,7 @@ function drawCenter(markers) {
         clearTimeout(timeout[markers[i].id]);
         timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
     }
+    createObjectMesh(markers[i].id, 100);
     renderer.render(scene, camera);
 }
 
