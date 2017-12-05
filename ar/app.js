@@ -126,8 +126,8 @@ function drawCenter(markers) {
         var x = (x0+x1+x2+x3)*scale/4;
         var y = (y0+y1+y2+y3)*scale/4;
 
-        // context.fillStyle = "blue";
-        // context.fillRect(x-2, y-2, 4, 4);
+        context.fillStyle = "blue";
+        context.fillRect(x-2, y-2, 4, 4);
 
         // var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
         // var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
@@ -157,8 +157,8 @@ function drawCenter(markers) {
         yrotate = yrotate + 0.05;
         zrotate = zrotate + 0.05;
 
-        prevX = (x - window.innerWidth/2);
-        prevY = (window.innerHeight/2 - y);
+        prevX = (scale*x - window.innerWidth/2);
+        prevY = (window.innerHeight/2 - scale*y);
 
         removeEntity(markers[i].id);
         createObjectMesh(markers[i].id, a);
