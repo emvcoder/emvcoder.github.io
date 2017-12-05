@@ -157,8 +157,8 @@ function drawCenter(markers) {
         yrotate = yrotate + 0.05;
         zrotate = zrotate + 0.05;
 
-        prevX = (scale*x - window.innerWidth/2);
-        prevY = (window.innerHeight/2 - scale*y);
+        prevX = (x - window.innerWidth/2);
+        prevY = (window.innerHeight/2 - y);
 
         removeEntity(markers[i].id);
         createObjectMesh(markers[i].id, a);
