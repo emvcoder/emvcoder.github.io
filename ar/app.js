@@ -2,7 +2,7 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
-var scale = 2;
+var scale = 1;
 
 function onLoad(){
     video = document.getElementById("video");
@@ -134,7 +134,7 @@ function drawCenter(markers) {
         var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        var a = (AB+BC+CD+AD)/4/scale;
+        var a = (AB+BC+CD+AD)/4;
 
         var k = (AB > CD) ? 1 : -1;
 
