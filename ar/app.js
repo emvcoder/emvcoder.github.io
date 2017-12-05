@@ -9,8 +9,8 @@ function onLoad(){
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth/scale;
+    canvas.height = window.innerHeight/scale;
 
     function successCallback(stream) {
         if (window.webkitURL) {
@@ -123,8 +123,8 @@ function drawCenter(markers) {
             if (x0 > xs) xnum++;
         })
 
-        var x = (x0+x1+x2+x3)/4;
-        var y = (y0+y1+y2+y3)/4;
+        var x = (x0+x1+x2+x3)*scale/4;
+        var y = (y0+y1+y2+y3)*scale/4;
 
         // context.fillStyle = "blue";
         // context.fillRect(x-2, y-2, 4, 4);
@@ -134,7 +134,7 @@ function drawCenter(markers) {
         var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        var a = (AB+BC+CD+AD)/4;
+        var a = (AB+BC+CD+AD)*scale/4;
 
         var k = (AB > CD) ? 1 : -1;
 
