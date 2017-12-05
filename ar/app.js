@@ -2,15 +2,15 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
-var scale = 2.5;
+var scale = 2;
 
 function onLoad(){
     video = document.getElementById("video");
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth/scale;
-    canvas.height = window.innerHeight/scale;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     function successCallback(stream) {
         if (window.webkitURL) {
@@ -123,29 +123,29 @@ function drawCenter(markers) {
             if (x0 > xs) xnum++;
         })
 
-        var x = (x0+x1+x2+x3)*scale/4;
-        var y = (y0+y1+y2+y3)*scale/4;
+        var x = (x0+x1+x2+x3)/4;
+        var y = (y0+y1+y2+y3)/4;
 
-        context.fillStyle = "blue";
-        context.fillRect(x-2, y-2, 4, 4);
+        // context.fillStyle = "blue";
+        // context.fillRect(x-2, y-2, 4, 4);
 
-        // var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
-        // var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
-        // var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
-        // var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
+        var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
+        var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
+        var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
+        var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        // var a = (AB+BC+CD+AD)/4;
+        var a = (AB+BC+CD+AD)/4;
 
-        // var k = (AB > CD) ? 1 : -1;
+        var k = (AB > CD) ? 1 : -1;
 
-        // var t = AD > BC ? 1 : -1;
+        var t = AD > BC ? 1 : -1;
 
-        // if (ynum > 1) {
-        //    k = -k;
-        //    t = -t;
-        // }
-        // var alpha = k*Math.atan((Math.min(AB, CD) - Math.max(AB, CD))/Math.abs(y0 - y3));
-        // var betha = t*Math.atan((Math.min(BC, AD) - Math.max(BC, AD))/Math.abs(y1 - y2));
+        if (ynum > 1) {
+           k = -k;
+           t = -t;
+        }
+        var alpha = k*Math.atan((Math.min(AB, CD) - Math.max(AB, CD))/Math.abs(y0 - y3));
+        var betha = t*Math.atan((Math.min(BC, AD) - Math.max(BC, AD))/Math.abs(y1 - y2));
 
         // if (xnum > 1) {
         //  var corner_s = alpha;
@@ -153,12 +153,12 @@ function drawCenter(markers) {
         //  betha = alpha;
         // }
 
-//         xrotate = xrotate + 0.05;
-//         yrotate = yrotate + 0.05;
-//         zrotate = zrotate + 0.05;
+        xrotate = alpha;
+        yrotate = betha;
+        zrotate = zrotate+0.05;
 
-        prevX = (scale*x - window.innerWidth/2);
-        prevY = (window.innerHeight/2 - scale*y);
+        prevX = (x - window.innerWidth/2);
+        prevY = (window.innerHeight/2 - y);
 
         removeEntity(markers[i].id);
         createObjectMesh(markers[i].id, a);
@@ -176,7 +176,6 @@ function drawCenter(markers) {
         clearTimeout(timeout[markers[i].id]);
         timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
     }
-    createObjectMesh(markers[i].id, 100);
     renderer.render(scene, camera);
 }
 
