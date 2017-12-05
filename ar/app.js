@@ -134,7 +134,7 @@ function drawCenter(markers) {
         var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
         var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        var a = (AB+BC+CD+AD)/4;
+        var a = (AB+BC+CD+AD)/4/scale;
 
         var k = (AB > CD) ? 1 : -1;
 
@@ -153,9 +153,9 @@ function drawCenter(markers) {
         //  betha = alpha;
         // }
 
-        xrotate = alpha;
-        yrotate = betha;
-        zrotate = zrotate+0.05;
+        xrotate = xrotate + 0.05;
+        yrotate = yrotate + 0.05;
+        zrotate = zrotate + 0.05;
 
         prevX = (x - window.innerWidth/2);
         prevY = (window.innerHeight/2 - y);
