@@ -2,15 +2,15 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
-// var scale = 1;
+var scale = 1.5;
 
 function onLoad(){
     video = document.getElementById("video");
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth/scale;
+    canvas.height = window.innerHeight/scale;
 
     function successCallback(stream) {
         if (window.webkitURL) {
@@ -123,8 +123,8 @@ function drawCenter(markers) {
             if (x0 > xs) xnum++;
         })
 
-        var x = (x0+x1+x2+x3)/4;
-        var y = (y0+y1+y2+y3)/4;
+        var x = (x0+x1+x2+x3)*scale/4;
+        var y = (y0+y1+y2+y3)*scale/4;
 
         // context.fillStyle = "blue";
         // context.fillRect(x-2, y-2, 4, 4);
@@ -157,8 +157,8 @@ function drawCenter(markers) {
         yrotate = yrotate + 0.05;
         zrotate = zrotate + 0.05;
 
-        prevX = (x - window.innerWidth/2);
-        prevY = (window.innerHeight/2 - y);
+        prevX = (scale*x - window.innerWidth/2);
+        prevY = (window.innerHeight/2 - scale*y);
 
         removeEntity(markers[i].id);
         createObjectMesh(markers[i].id, a);
