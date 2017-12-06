@@ -254,6 +254,7 @@ function createObjectMesh(id, side) {
 
   var material = new THREE.MeshNormalMaterial();
   mesh = new THREE.Mesh(geometry, material);
+  mesh.position.z = -1;
   mesh.name = id;
 }
 
