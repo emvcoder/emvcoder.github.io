@@ -198,8 +198,8 @@ function drawCenter(markers) {
 
         scene.add(mesh);
 
-        mesh.position.x = prevX*canvas.width / canvas.height * 0.75;
-        mesh.position.y = prevY*canvas.width / canvas.height * 0.75;
+        mesh.position.x = prevX*canvas.width / canvas.height/2;
+        mesh.position.y = prevY*canvas.width / canvas.height/2;
         mesh.position.z = a/Math.sqrt(2);
         
         console.log(prevY, a)
