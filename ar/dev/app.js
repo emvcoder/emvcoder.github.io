@@ -198,8 +198,8 @@ function drawCenter(markers) {
 
         scene.add(mesh);
 
-        mesh.position.x = Math.sqrt(Math.pow(prevX, 2) + Math.pow(a, 2));
-        mesh.position.y = Math.sqrt(Math.pow(prevY, 2) + Math.pow(a, 2));
+        mesh.position.x = Math.sqrt(Math.pow(prevX, 2) - Math.pow(a, 2));
+        mesh.position.y = Math.sqrt(Math.pow(prevY, 2) - Math.pow(a, 2));
         mesh.position.z = a;
         
         mesh.rotation.z = zrotate;
