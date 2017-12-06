@@ -198,10 +198,12 @@ function drawCenter(markers) {
 
         scene.add(mesh);
 
-        mesh.position.x = Math.sqrt(Math.pow(prevX, 2) - Math.pow(a, 2));
-        mesh.position.y = Math.sqrt(Math.pow(prevY, 2) - Math.pow(a, 2));
-        mesh.position.z = a;
+        mesh.position.x = prevX;
+        mesh.position.y = prevY;
+        mesh.position.z = a/Math.sqrt(2);
         
+        console.log(prevY, a)
+
         mesh.rotation.z = zrotate;
         mesh.rotation.x = xrotate;
         mesh.rotation.y = yrotate;
@@ -264,7 +266,7 @@ function removeEntity(id) {
 }
 
 function init() {
-    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera = new THREE.PerspectiveCamera( 40, canvas.width / canvas.height, 1, 1000 );
     camera.position.z = 1000;
 
     scene = new THREE.Scene();
