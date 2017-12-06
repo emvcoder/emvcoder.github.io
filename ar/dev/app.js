@@ -172,17 +172,7 @@ function drawCenter(markers) {
 
         var a = (AB+BC+CD+AD)*1.5/4;
 
-        var k = (AB > CD) ? 1 : 1;
-
-        var t = AD > BC ? -1 : 1;
-
-        if (ynum > 1) {
-           k = -k;
-           t = -t;
-        }
-
-        var alpha;
-        var betha;
+        var alpha, betha;
 
         if (ynum >= 2) {
             alpha = scale*Math.asin((AB - CD)/(AD + BC));
@@ -191,9 +181,9 @@ function drawCenter(markers) {
         }
 
         if (xnum >= 2) {
-            betha = scale*Math.asin((BC - AD)/(AB + CD));
-        } else {
             betha = scale*Math.asin((AD - BC)/(AB + CD));
+        } else {
+            betha = scale*Math.asin((BC - AD)/(AB + CD));
         }
 
 
