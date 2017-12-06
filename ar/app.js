@@ -190,7 +190,7 @@ function createObjectMesh(id, side) {
             geometry = new THREE.CubeGeometry(side, 2*side, side);
             break;
         case 102:
-            geometry = new THREE.ConeGeometry(side/2, side, 4);
+            geometry = new THREE.ConeGeometry(side/2*1.5, side*1.5, 4);
             break;
         case 103:
             geometry = new THREE.CylinderGeometry(side/2, side/2, side, 64);
