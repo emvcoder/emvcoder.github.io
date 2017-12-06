@@ -186,9 +186,6 @@ function drawCenter(markers) {
             betha = scale*Math.asin((BC - AD)/(AB + CD));
         }
 
-
-        console.log(alpha, betha)
-
         xrotate = alpha;
         yrotate = betha;
         // zrotate = zrotate + 0.05;
