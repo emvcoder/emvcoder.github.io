@@ -12,6 +12,7 @@ function onLoad(){
     canvas.width = window.innerWidth/scale;
     canvas.height = window.innerHeight/scale;
 
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     function successCallback(stream) {
         if (window.webkitURL) {
             video.src = window.webkitURL.createObjectURL(stream);
@@ -24,7 +25,7 @@ function onLoad(){
 
     function errorCallback(error) {}
 
-    getUserMedia({video: {facingMode: "environment"} }, successCallback, errorCallback);
+    navigator.getUserMedia({video: {facingMode: "environment"} }, successCallback, errorCallback);
 
     detector = new AR.Detector();
     init();
