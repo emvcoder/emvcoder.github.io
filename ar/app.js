@@ -12,7 +12,6 @@ function onLoad(){
     canvas.width = window.innerWidth/scale;
     canvas.height = window.innerHeight/scale;
 
-    navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia;
     function successCallback(stream) {
         if (window.webkitURL) {
             video.src = window.webkitURL.createObjectURL(stream);
