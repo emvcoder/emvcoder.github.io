@@ -183,7 +183,7 @@ function createObjectMesh(id, side) {
     var geometry;
 
     switch (id) {
-        case 100:
+        case 7:
             geometry = new THREE.CubeGeometry(side, side, side);
             break;
         case 101:
