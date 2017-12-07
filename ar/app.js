@@ -14,13 +14,7 @@ function onLoad(){
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (navigator.getUserMedia) {
       function successCallback(stream) {
-          if (window.webkitURL) {
-          video.src = window.webkitURL.createObjectURL(stream);
-          } else if (video.mozSrcObject !== undefined) {
-          video.mozSrcObject = stream;
-          } else {
-          video.src = stream;
-          }
+          video.src = window.URL.createObjectURL(stream);
       }
 
       function errorCallback(error) {}
