@@ -14,7 +14,7 @@ function onLoad(){
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (navigator.getUserMedia) {
       function successCallback(stream) {
-          video.src = window.URL.createObjectURL(stream);
+          video.src = window.webkitURL.createObjectURL(stream);
       }
 
       function errorCallback(error) {}
