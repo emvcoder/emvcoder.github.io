@@ -24,7 +24,7 @@ function onLoad(){
 
     function errorCallback(error) {}
 
-    navigator.webkitGetUserMedia({video: true, audio: false }, successCallback, errorCallback);
+    navigator.webkitGetUserMedia({video: {facingMode: "environment"}, audio: false }, successCallback, errorCallback);
 
     detector = new AR.Detector();
     init();
