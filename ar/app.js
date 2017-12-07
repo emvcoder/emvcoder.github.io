@@ -2,42 +2,42 @@ var video, canvas, context, imageData, detector;
 var camera, scene, renderer;
 var mesh, timeout = [];
 var xrotate = 0, yrotate = 0, zrotate = 0;
+var scale = 1;
 
 function onLoad(){
     video = document.getElementById("video");
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth/3;
-    canvas.height = window.innerHeight/3;
+    canvas.width = window.innerWidth/scale;
+    canvas.height = window.innerHeight/scale;
 
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    if (navigator.getUserMedia) {
-      function successCallback(stream) {
-          video.src = window.webkitURL.createObjectURL(stream);
-      }
-
-      function errorCallback(error) {}
-
-      navigator.getUserMedia({video: true}, successCallback, errorCallback);
-
-      detector = new AR.Detector();
-      init();
-      requestAnimationFrame(tick);
+    function successCallback(stream) {
+        if (window.webkitURL) {
+            video.src = window.webkitURL.createObjectURL(stream);
+        } else if (video.mozSrcObject !== undefined) {
+            video.mozSrcObject = stream;
+        } else {
+            video.src = stream;
+        }
     }
+
+    function errorCallback(error) {}
+
+    getUserMedia({video: {facingMode: "environment"} }, successCallback, errorCallback);
+
+    detector = new AR.Detector();
+    init();
+    requestAnimationFrame(tick);
 }
 
 function tick(){
     requestAnimationFrame(tick);
 
-    // if (video.readyState === video.HAVE_ENOUGH_DATA){
-        snapshot();
-        // animate();
-        var markers = detector.detect(imageData);
-        drawCorners(markers);
-        // drawId(markers);
-        drawCenter(markers);
-    // }
+    snapshot();
+    var markers = detector.detect(imageData);
+    drawCorners(markers);
+    drawCenter(markers);
 }
 
 function snapshot(){
@@ -90,6 +90,7 @@ function drawId(markers){
         y = Math.min(y, corner.y);
     }
 
+    console.log(markers[i].id)
     context.strokeText(markers[i].id, x, y)
     }
 }
@@ -109,157 +110,132 @@ function drawCenter(markers) {
             x3 = corners[3].x,
             y3 = corners[3].y;
 
-        // let arrx = [x1, x2, x3];
-        // let arry = [y1, y2, y3];
-        // let xnum = 0,
-        //     ynum = 0;
+        var arrx = [x1, x2, x3];
+        var arry = [y1, y2, y3];
+        var xnum = 0,
+            ynum = 0;
 
-        // arry.forEach(ys => {
-        //     if (ys > y0) ynum++;
-        // })
+        arry.forEach(function(ys) {
+            if (ys > y0) ynum++;
+        })
 
-        // arrx.forEach(function(xs) {
-        //     if (x0 > xs) xnum++;
-        // })
+        arrx.forEach(function(xs) {
+            if (x0 > xs) xnum++;
+        })
 
-        var x = (x0+x1+x2+x3)/4;
-        var y = (y0+y1+y2+y3)/4;
+        var x = (x0+x1+x2+x3)*scale/4;
+        var y = (y0+y1+y2+y3)*scale/4;
 
-        context.fillStyle = "blue";
-        context.fillRect(x-2, y-2, 4, 4);
+        // context.fillStyle = "blue";
+        // context.fillRect(x-2, y-2, 4, 4);
 
-        // let AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
-        // let AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
-        // let BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
-        // let CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
+        var AD = Math.sqrt(Math.pow(Math.abs(x0 - x3), 2)+Math.pow(Math.abs(y0 - y3), 2));
+        var AB = Math.sqrt(Math.pow(Math.abs(x0 - x1), 2)+Math.pow(Math.abs(y0 - y1), 2));
+        var BC = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2)+Math.pow(Math.abs(y1 - y2), 2));
+        var CD = Math.sqrt(Math.pow(Math.abs(x2 - x3), 2)+Math.pow(Math.abs(y2 - y3), 2));
 
-        // let a = (AB+BC+CD+AD)*2/3;
+        var a = (AB+BC+CD+AD)*1.5/4;
 
-        // // let k = ((AB - CD) > 0.1 || (AB - CD)) < -0.1 ? -1 : 1;
+        var k = (AB > CD) ? 1 : -1;
 
-        // // let alpha = (Math.PI/2-Math.acos(Math.abs(y-y3)/a))*Math.PI*2;
+        var t = AD > BC ? 1 : -1;
 
-        // // context.fillStyle = "blue";
-        // // context.fillRect(x3+CD/2, Math.abs(y2-y3)+Math.min(y2, y3), 4, 4);        
+        if (ynum > 1) {
+           k = -k;
+           t = -t;
+        }
+        var alpha = k*Math.atan((Math.min(AB, CD) - Math.max(AB, CD))/Math.abs(y0 - y3));
+        var betha = t*Math.atan((Math.min(BC, AD) - Math.max(BC, AD))/Math.abs(y1 - y2));
 
-        // // let OR = Math.sqrt(Math.pow(CD/2, 2) + Math.pow(Math.abs(y2-y3)+Math.min(y2, y3) - y, 2));
-
-        // let k = (AB > CD) ? 1 : -1;
-
-        // // let alpha = k*(Math.PI/2 - Math.asin(Math.min(AB, CD)/Math.max(AB, CD)));
-
-        // let t = AD > BC ? 1 : -1;
-
-        // if (ynum > 1) {
-        //     k = -k;
-        //     t = -t;
+        // if (xnum > 1) {
+        //  var corner_s = alpha;
+        //  alpha = betha;
+        //  betha = alpha;
         // }
 
-        // // let betha = t*(Math.PI/2 - Math.asin(Math.min(AD, BC)/Math.max(AD, BC)));
+        xrotate = xrotate + 0.05;
+        yrotate = yrotate + 0.05;
+//         zrotate = zrotate + 0.05;
 
-        // let alpha = 3*k*Math.atan((Math.min(AB, CD)-Math.max(AB, CD))/Math.abs(y0-y3));
-        // let betha = 3*t*Math.atan((Math.min(BC, AD)-Math.max(BC, AD))/Math.abs(y1-y2));
-        // // console.log(alpha)
+        prevX = (x - window.innerWidth/2);
+        prevY = (window.innerHeight/2 - y);
 
-        // // if (xnum > 2) {
-        // //     let m = betha;
-        // //     betha = alpha;
-        // //     alpha = betha;
-        // // }
+        removeEntity(markers[i].id);
+        createObjectMesh(markers[i].id, a);
 
-        // // let gamma = Math.atan2(Math.abs(y0-y3), Math.abs(x0-x3));s
+        scene.add(mesh);
 
-        // xrotate = alpha;
-        // yrotate = betha;
-        // zrotate = zrotate+0.05;
+        mesh.position.x = prevX;
+        mesh.position.y = prevY;
+        mesh.position.z = a/Math.sqrt(2);
+        
+        mesh.rotation.z = zrotate;
+        mesh.rotation.x = xrotate;
+        mesh.rotation.y = yrotate;
 
-        // context.fillStyle = "red";
-        // context.fillRect(x - 2, y - 2, 4, 4);
-
-        // prevX = (3*x - window.innerWidth/2);
-        // prevY = (window.innerHeight/2 - 3*y);
-
-        // removeEntity(markers[i].id);
-
-        // createObjectMesh(markers[i].id, a);
-        // scene.add(mesh);
-
-        // mesh.position.x = prevX;
-        // mesh.position.y = prevY;
-        // mesh.position.z = a/Math.sqrt(2);
-
-        // mesh.rotation.z = zrotate;
-        // mesh.rotation.x = xrotate;
-        // mesh.rotation.y = yrotate;
-
-        // clearTimeout(timeout[markers[i].id]);
-        // timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
+        clearTimeout(timeout[markers[i].id]);
+        timeout[markers[i].id] = setTimeout(removeEntity, 800, markers[i].id);
     }
-    // renderer.render(scene, camera);
+    renderer.render(scene, camera);
 }
 
-// function createObjectMesh(id, side) {
-//     var geometry;
+function createObjectMesh(id, side) {
+    var geometry;
 
-//     switch (id) {
-//         case 7:
-//             geometry = new THREE.CubeGeometry(side, side, side);
-//             break;
-//         case 101:
-//             geometry = new THREE.CubeGeometry(side, 2*side, side);
-//             // geometry = new THREE.DodecahedronGeometry(side);
-//             break;
-//         case 102:
-//             geometry = new THREE.ConeGeometry(side/2, side, 4);
-//             break;
-//         case 103:
-//             geometry = new THREE.CylinderGeometry(side/2, side/2, side, 64);
-//             break;
-//         case 104:
-//             geometry = new THREE.ConeGeometry(side/2, side, 64);
-//             break;
-//         case 105:
-//             geometry = new THREE.CylinderGeometry(side, side, 2*side, 3);
-//             break;
-//         case 106:
-//             geometry = new THREE.TetrahedronGeometry(side/2);
-//             break;
-//         case 107:
-//             geometry = new THREE.OctahedronGeometry(side/2);
-//             break;
-//         case 108:
-//             geometry = new THREE.DodecahedronGeometry(side/2);
-//             break;
-//         case 109:
-//             geometry = new THREE.IcosahedronGeometry(side/2);
-//             break;
-//         default:
-//             geometry = null;
-//   }
+    switch (id) {
+        case 100:
+            geometry = new THREE.CubeGeometry(side, side, side);
+            break;
+        case 101:
+            geometry = new THREE.CubeGeometry(side, 2*side, side);
+            break;
+        case 102:
+            geometry = new THREE.ConeGeometry(side/2*1.5, side*1.5, 4);
+            break;
+        case 103:
+            geometry = new THREE.CylinderGeometry(side/2, side/2, side, 64);
+            break;
+        case 104:
+            geometry = new THREE.ConeGeometry(side/2, side, 64);
+            break;
+        case 105:
+            geometry = new THREE.CylinderGeometry(side, side, 2*side, 3);
+            break;
+        case 106:
+            geometry = new THREE.TetrahedronGeometry(side/2);
+            break;
+        case 107:
+            geometry = new THREE.OctahedronGeometry(side/2);
+            break;
+        case 108:
+            geometry = new THREE.DodecahedronGeometry(side/2);
+            break;
+        case 109:
+            geometry = new THREE.IcosahedronGeometry(side/2);
+            break;
+        default:
+            geometry = null;
+  }
 
-//   var material = new THREE.MeshNormalMaterial();
-//   mesh = new THREE.Mesh(geometry, material);
-//   mesh.name = id;
-// }
+  var material = new THREE.MeshNormalMaterial();
+  mesh = new THREE.Mesh(geometry, material);
+  mesh.name = id;
+}
 
-// function removeEntity(id) {
-//     var selectedObject = scene.getObjectByName(id);
-//     scene.remove(selectedObject);
-// }
+function removeEntity(id) {
+    var selectedObject = scene.getObjectByName(id);
+    scene.remove(selectedObject);
+}
 
 function init() {
-    // camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
-    // camera.position.z = 1000;
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera.position.z = 1000;
 
-    // scene = new THREE.Scene();
-    // renderer = new THREE.WebGLRenderer({ alpha: true });
-    // renderer.setPixelRatio( window.devicePixelRatio );
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-    // document.body.appendChild( renderer.domElement );
+    scene = new THREE.Scene();
+    renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
 }
-
-// function animate() {
-//     mesh.rotation.y += 0.005;
-// }
 
 window.onload = onLoad;
