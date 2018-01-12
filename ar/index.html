@@ -1,21 +1,290 @@
 <html>
 <head>
-  <title>Augmented Reality Marker Detector</title>
-  <script type="text/javascript" src="./libs/polyfill.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/adapterjs/0.15.0/adapter.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
-  <script type="text/javascript" src="./cv.js"></script>
-  <script type="text/javascript" src="./aruco.js"></script>
+  <title>Augmented Reality</title>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script> 
+
+  <script type="text/javascript" src="svd.js"></script> 
+  <script type="text/javascript" src="posit1.js"></script> 
+  <script type="text/javascript" src="cv.js"></script> 
+  <script type="text/javascript" src="aruco.js"></script>
+  
   <style>
-	  canvas {
-		  position: absolute;
-	  }
+	canvas {
+	  width: 100% !important;
+	  height: 100vh !important;
+	}
   </style>
-  <script src="./app.js"></script>
+
+  <script>
+	var video, canvas, context, imageData, detector, posit;
+	var renderer1, renderer2, renderer3;
+	var scene1, scene2, scene3, scene4;
+	var camera1, camera2, camera3, camera4;
+	var plane1, plane2, model, texture;
+	var step = 0.0;
+	var timeout = [], font;
+	var mesh, mesh2, zrotate = 0;
+
+	var modelSize = 35.0; //millimeters
+
+	function onLoad(){
+	  video = document.getElementById("video");
+	  canvas = document.getElementById("canvas");
+	  context = canvas.getContext("2d");
+	
+	  canvas.width = 320;
+	  canvas.height = 240;
+	  
+	  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+	  if (navigator.getUserMedia){
+		init();
+	  }
+	};
+	
+	function init(){
+	  navigator.getUserMedia({video:true}, 
+		function (stream){
+		  if (window.webkitURL) {
+			video.src = window.webkitURL.createObjectURL(stream);
+		  } else if (video.mozSrcObject !== undefined) {
+			video.mozSrcObject = stream;
+		  } else {
+			video.src = stream;
+		  }
+		},
+		function(error){
+		}
+	  );
+	  
+	  detector = new AR.Detector();
+	  posit = new POS.Posit(modelSize, canvas.width);
+
+	  createRenderers();
+	  createScenes();
+
+	  requestAnimationFrame(tick);
+	};
+
+	function tick(){
+	  	requestAnimationFrame(tick);
+	  
+	  	if (video.readyState === video.HAVE_ENOUGH_DATA){
+			snapshot();
+
+			var markers = detector.detect(imageData);
+			drawCorners(markers);
+		
+			texture.children[0].material.map.needsUpdate = true;
+			renderer3.autoClear = false;
+			renderer3.clear();
+			renderer3.render(scene3, camera3);
+
+			if (markers.length > 0) render(markers);
+	  	}
+	};
+
+	function snapshot(){
+	  	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+	  	imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+	};
+	
+	function drawCorners(markers){
+	  	var corners, corner, i, j;	
+	  	context.lineWidth = 3;
+
+	  	for (i = 0; i < markers.length; ++i){
+			corners = markers[i].corners;
+		
+			context.strokeStyle = "red";
+			context.beginPath();
+		
+			for (j = 0; j < corners.length; ++ j){
+		  		corner = corners[j];
+		  		context.moveTo(corner.x, corner.y);
+		  		corner = corners[(j + 1) % corners.length];
+		 		context.lineTo(corner.x, corner.y);
+			}
+
+			context.stroke();
+			context.closePath();
+		
+			context.strokeStyle = "green";
+			context.strokeRect(corners[0].x - 2, corners[0].y - 2, 4, 4);
+	  	}
+	};
+
+	function createRenderers(){
+	  	renderer3 = new THREE.WebGLRenderer();
+	  	renderer3.setClearColor(0xffffff, 1);
+	  	renderer3.setSize(1024, 768);
+	  	document.getElementById("container").appendChild(renderer3.domElement);
+	  
+	  	scene3 = new THREE.Scene();
+	  	camera3 = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5);
+	  	scene3.add(camera3);
+	  
+	  	scene4 = new THREE.Scene();
+	  	camera4 = new THREE.PerspectiveCamera(40, canvas.width / canvas.height, 1, 1000);
+	  	scene4.add(camera4);
+	};
+
+	function removeEntity(id) {
+	  	var selectedObject = scene4.getObjectByName(id);
+	  	scene4.remove(selectedObject);
+	}
+
+	function render(markers){
+	  	var id = markers[0].id;
+
+	  	removeEntity(id);
+	  	createModel(id);
+
+	  	corners = markers[0].corners;
+		
+	  	for (i = 0; i < corners.length; ++ i){
+			corner = corners[i];
+		
+			corner.x = corner.x - (canvas.width / 2);
+			corner.y = (canvas.height / 2) - corner.y;
+	  	}
+	  
+	  	pose = posit.pose(corners);
+	  	updateObject(mesh, pose.bestRotation, pose.bestTranslation);
+	  	scene4.add(mesh);
+	  	clearTimeout(timeout[id]);
+	  	timeout[id] = setTimeout(removeEntity, 800, id);
+
+	  	renderer3.render(scene4, camera4);
+	};
+
+	function createScenes(){
+	  	texture = createTexture();
+	  	scene3.add(texture); 
+	};
+	
+	function createPlane(){
+	  	var object = new THREE.Object3D(),
+			geometry = new THREE.PlaneGeometry(1.0, 1.0, 0.0),
+			material = new THREE.MeshNormalMaterial(),
+			mesh = new THREE.Mesh(geometry, material);
+	  
+	  	object.add(mesh);
+	  
+	  	return object;
+	};
+	
+	function createTexture(){
+		var texture = new THREE.Texture(video),
+			object = new THREE.Object3D(),
+			geometry = new THREE.PlaneGeometry(1.0, 1.0, 0.0),
+			material = new THREE.MeshBasicMaterial( {map: texture, depthTest: false, depthWrite: false} ),
+			mesh = new THREE.Mesh(geometry, material);
+		  
+		object.position.z = -1;
+		object.add(mesh);
+	  
+		return object;
+	};
+
+	function removeEntity(id) {
+	  var selectedObject = scene4.getObjectByName(id);
+	  scene4.remove(selectedObject);
+	};
+	
+	function createModel(id){
+		var geometry;
+
+		switch (id) {
+			case 7:
+				geometry = new THREE.CubeGeometry(1, 1, 1);
+				break;
+			case 101:
+				geometry = new THREE.CubeGeometry(0.5, 1, 0.5);
+				break;
+			case 102:
+				geometry = new THREE.ConeGeometry(1/2, 1, 4);
+				break;
+			case 103:
+				geometry = new THREE.CylinderGeometry(1/2, 1/2, 1, 64);
+				break;
+			case 104:
+				geometry = new THREE.ConeGeometry(1/2, 1, 64);
+				break;
+			case 105:
+				geometry = new THREE.CylinderGeometry(1, 1, 2, 3);
+				break;
+			case 106:
+				geometry = new THREE.TetrahedronGeometry(1/2);
+				break;
+			case 107:
+				geometry = new THREE.OctahedronGeometry(1/2);
+				geometry = new THREE.CubeGeometry(1, 1, 1);
+				break;
+			case 108:
+				geometry = new THREE.DodecahedronGeometry(1/2);
+				break;
+			case 109:
+				geometry = new THREE.IcosahedronGeometry(1/2);
+				break;
+			default:
+				geometry = null;
+		}
+
+		var object = new THREE.Object3D(),
+			material = new THREE.MeshNormalMaterial();
+
+		mesh = new THREE.Mesh(geometry, material);
+		mesh.name = id;
+	};
+
+	function updateScenes(markers){
+		var corners, corner, pose, i;
+	  
+		if (markers.length > 0){
+			corners = markers[0].corners;
+		
+			for (i = 0; i < corners.length; ++ i){
+				corner = corners[i];
+				corner.x = corner.x - (canvas.width / 2);
+				corner.y = (canvas.height / 2) - corner.y;
+			}
+			
+			pose = posit.pose(corners);
+			updateObject(model, pose.bestRotation, pose.bestTranslation);
+			step += 0.025;  
+			mesh.rotation.z -= step;
+		}
+	};
+	
+	function updateObject(object, rotation, translation){
+		mesh.scale.x = modelSize;
+		mesh.scale.y = modelSize;
+		mesh.scale.z = modelSize;
+
+		zrotate += 0.025;
+	  
+		mesh.rotation.x = -Math.asin(-rotation[1][2]);
+		mesh.rotation.y = -Math.atan2(rotation[0][2], rotation[2][2]);
+		mesh.rotation.z = Math.atan2(rotation[1][0], rotation[1][1]) + zrotate;
+
+		mesh.position.x = translation[0];
+		mesh.position.y = translation[1];
+		mesh.position.z = -translation[2];
+	};
+
+	window.onload = onLoad;
+  </script>
+
 </head>
 
-<body style="font-family: monospace; margin: 0">
-  <video id="video" autoplay="true" style="display: none;"></video>
-  <canvas id="canvas" style="width:100vw; height:100vh; z-index: -1;"></canvas>
+<body style="text-align: center; font-family: monospace;padding: 0; margin: 0">
+
+  <video id="video" width=100vw height=100vh autoplay="true" style="display:none;"></video>
+  <div style="width: 100%;padding: 0; margin: 0">
+	<canvas id="canvas" style="display:none; width: 100vw; height: 100vh; float: left; border: solid 1px black;"></canvas>
+	<div id="container" style="width: 100%;padding: 0; margin: 0"></div>
+  </div>
 </body>
+  
 </html>
