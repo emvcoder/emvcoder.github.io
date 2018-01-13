@@ -117,7 +117,7 @@
 	function createRenderers(){
 	  	renderer3 = new THREE.WebGLRenderer();
 	  	renderer3.setClearColor(0xffffff, 1);
-	  	renderer3.setSize(canvas.width*3, canvas.height*3);
+	  	renderer3.setSize(window.innerWidth, window.innerHeight);
 	  	document.getElementById("container").appendChild(renderer3.domElement);
 	  
 	  	scene3 = new THREE.Scene();
